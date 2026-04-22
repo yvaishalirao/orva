@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orva Oils — Cold Pressed Oils | Millets | Traditionals</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F3EC;
+    --warm-white: #FDFAF5;
+    --olive: #5C6B3A;
+    --olive-light: #7A8B50;
+    --olive-dark: #3D4A26;
+    --gold: #C9A84C;
+    --gold-light: #E2C97E;
+    --gold-dark: #9A7A2E;
+    --charcoal: #2A2A22;
+    --charcoal-mid: #4A4A3A;
+    --muted: #7A7868;
+    --orange-accent: #D4622A;
+    --border: rgba(90,80,50,0.15);
+    --border-mid: rgba(90,80,50,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--warm-white);
+    color: var(--charcoal);
+    font-weight: 300;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--charcoal);
+    text-decoration: none;
+  }
+
+  .nav-logo span {
+    color: var(--olive);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--charcoal-mid);
+    transition: color 0.2s;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+  }
+
+  .nav-links a.active,
+  .nav-links a:hover {
+    color: var(--olive);
+    border-bottom-color: var(--olive);
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .nav-search {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-icon {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    color: var(--charcoal-mid);
+  }
+
+  .nav-icon:hover { color: var(--olive); }
+
+  .cart-badge {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .cart-count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--orange-accent);
+    color: white;
+    font-size: 9px;
+    font-weight: 500;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    height: 90vh;
+    min-height: 600px;
+    background: linear-gradient(135deg, #1a1f0e 0%, #2d3520 40%, #3d4a26 100%);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-bg-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 30px,
+      rgba(201,168,76,0.4) 30px,
+      rgba(201,168,76,0.4) 31px
+    );
+  }
+
+  .hero-img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 55%;
+    object-fit: cover;
+    opacity: 0.5;
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 30%, black 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 30%, black 100%);
+  }
+
+  /* Decorative oil bottle illustration placeholder */
+  .hero-bottle-bg {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44%;
+    height: 85%;
+    background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-bottle-svg {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 240px;
+    opacity: 0.85;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 80px;
+    max-width: 680px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 5px 14px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-headline em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(247,243,236,0.65);
+    max-width: 380px;
+    margin-bottom: 44px;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--gold);
+    color: var(--charcoal);
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.25s, transform 0.2s;
+  }
+
+  .hero-cta:hover {
+    background: var(--gold-light);
+    transform: translateX(3px);
+  }
+
+  .hero-cta svg { transition: transform 0.2s; }
+  .hero-cta:hover svg { transform: translateX(4px); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 80px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(247,243,236,0.4);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .hero-scroll-line {
+    width: 40px;
+    height: 1px;
+    background: rgba(247,243,236,0.25);
+  }
+
+  .hero-dots {
+    position: absolute;
+    bottom: 40px;
+    right: 48px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .hero-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.3);
+    cursor: pointer;
+  }
+
+  .hero-dot.active {
+    background: var(--gold);
+    width: 24px;
+    border-radius: 3px;
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--olive-dark);
+    color: var(--cream);
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker-inner {
+    display: inline-flex;
+    gap: 0;
+    animation: ticker-scroll 24s linear infinite;
+  }
+
+  .ticker-item {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .ticker-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* SECTION LAYOUT */
+  section { padding: 80px 48px; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--olive);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--charcoal);
+    letter-spacing: -0.01em;
+  }
+
+  .section-title em { font-style: italic; color: var(--olive); }
+
+  /* PRODUCT GRID */
+  .products-section {
+    background: var(--warm-white);
+  }
+
+  .products-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 48px;
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--cream);
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .filter-tab {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 18px;
+    border-radius: 2px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-family: 'Jost', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .filter-tab.active {
+    background: var(--charcoal);
+    color: var(--cream);
+  }
+
+  .filter-tab:hover:not(.active) {
+    color: var(--charcoal);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .product-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(40,35,20,0.12);
+  }
+
+  .product-img-wrap {
+    position: relative;
+    aspect-ratio: 1;
+    background: #EDE8DC;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+  }
+
+  .product-card:hover .product-img-wrap img {
+    transform: scale(1.05);
+  }
+
+  .product-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  .badge-organic { background: var(--olive); color: var(--cream); }
+  .badge-bestseller { background: var(--charcoal); color: var(--cream); }
+  .badge-limited { background: var(--orange-accent); color: white; }
+
+  .product-info {
+    padding: 20px;
+  }
+
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .product-desc {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .product-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .product-select-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .product-select-label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    min-width: 52px;
+  }
+
+  .product-select {
+    flex: 1;
+    font-size: 11px;
+    font-family: 'Jost', sans-serif;
+    color: var(--charcoal);
+    background: var(--warm-white);
+    border: 1px solid var(--border-mid);
+    border-radius: 2px;
+    padding: 5px 8px;
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%237A7868' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 24px;
+  }
+
+  .product-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .product-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--charcoal);
+    letter-spacing: -0.02em;
+  }
+
+  .product-price .currency {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .add-to-cart {
+    width: 100%;
+    background: var(--olive-dark);
+    color: var(--cream);
+    border: none;
+    padding: 11px 0;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-family: 'Jost', sans-serif;
+    cursor: pointer;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+  }
+
+  .add-to-cart:hover { background: var(--olive); }
+
+  /* PURITY SECTION */
+  .purity-section {
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 520px;
+  }
+
+  .purity-content {
+    padding: 80px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .purity-section .section-label { color: var(--gold-light); }
+  .purity-section .section-label::before { background: var(--gold-light); }
+  .purity-section .section-title { color: var(--cream); }
+
+  .purity-body {
+    font-size: 14px;
+    line-height: 1.85;
+    color: rgba(247,243,236,0.6);
+    margin: 24px 0 36px;
+    max-width: 400px;
+    font-weight: 300;
+  }
+
+  .purity-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gold-light);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(226,201,126,0.3);
+    padding-bottom: 4px;
+    transition: gap 0.2s, border-color 0.2s;
+  }
+
+  .purity-link:hover {
+    gap: 14px;
+    border-color: var(--gold-light);
+  }
+
+  .purity-badges {
+    padding: 80px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    background: #222219;
+  }
+
+  .purity-badge-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    transition: background 0.2s;
+  }
+
+  .purity-badge-card:hover {
+    background: rgba(255,255,255,0.07);
+  }
+
+  .purity-badge-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .icon-green { background: rgba(92,107,58,0.3); }
+  .icon-gold { background: rgba(201,168,76,0.2); }
+  .icon-blue { background: rgba(60,90,140,0.3); }
+
+  .purity-badge-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+
+  .purity-badge-sub {
+    font-size: 12px;
+    color: rgba(247,243,236,0.45);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* NEWSLETTER */
+  .newsletter-section {
+    background: var(--olive-dark);
+    padding: 72px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+  }
+
+  .newsletter-left .section-label { color: var(--gold-light); }
+  .newsletter-left .section-label::before { background: var(--gold-light); }
+
+  .newsletter-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.15;
+    max-width: 380px;
+  }
+
+  .newsletter-title em { font-style: italic; }
+
+  .newsletter-form {
+    display: flex;
+    gap: 0;
+    max-width: 440px;
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  .newsletter-input {
+    flex: 1;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(247,243,236,0.2);
+    border-right: none;
+    padding: 14px 20px;
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--cream);
+    outline: none;
+    border-radius: 2px 0 0 2px;
+  }
+
+  .newsletter-input::placeholder {
+    color: rgba(247,243,236,0.4);
+  }
+
+  .newsletter-input:focus {
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(201,168,76,0.5);
+  }
+
+  .newsletter-btn {
+    background: var(--gold);
+    color: var(--charcoal);
+    border: none;
+    padding: 14px 28px;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 0 2px 2px 0;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .newsletter-btn:hover { background: var(--gold-light); }
+
+  /* FOOTER */
+  footer {
+    background: #18180F;
+    color: var(--cream);
+    padding: 64px 48px 32px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.6fr;
+    gap: 48px;
+    margin-bottom: 56px;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--cream);
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+  }
+
+  .footer-logo span { color: var(--gold-light); }
+
+  .footer-tagline {
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(247,243,236,0.4);
+    line-height: 1.7;
+    max-width: 220px;
+    margin-bottom: 28px;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 12px;
+  }
+
+  .social-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(247,243,236,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+    color: rgba(247,243,236,0.5);
+    font-size: 13px;
+  }
+
+  .social-icon:hover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    color: var(--gold-light);
+  }
+
+  .footer-col-title {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(247,243,236,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .footer-links a:hover { color: var(--cream); }
+
+  .footer-newsletter-label {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(247,243,236,0.5);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .footer-newsletter-form {
+    display: flex;
+    gap: 0;
+  }
+
+  .footer-email-input {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(247,243,236,0.12);
+    border-right: none;
+    padding: 10px 14px;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    color: var(--cream);
+    outline: none;
+    border-radius: 2px 0 0 2px;
+  }
+
+  .footer-email-input::placeholder { color: rgba(247,243,236,0.25); }
+  .footer-email-input:focus { border-color: rgba(201,168,76,0.4); }
+
+  .footer-join-btn {
+    background: var(--gold-dark);
+    color: var(--cream);
+    border: none;
+    padding: 10px 18px;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 0 2px 2px 0;
+    transition: background 0.2s;
+  }
+
+  .footer-join-btn:hover { background: var(--gold); }
+
+  .footer-divider {
+    height: 1px;
+    background: rgba(247,243,236,0.08);
+    margin-bottom: 28px;
+  }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-copy {
+    font-size: 11px;
+    color: rgba(247,243,236,0.25);
+    font-weight: 300;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-bottom-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .footer-bottom-links a {
+    font-size: 11px;
+    color: rgba(247,243,236,0.25);
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-bottom-links a:hover { color: rgba(247,243,236,0.6); }
+
+  /* COLOUR PALETTE DISPLAY (bottom of page) */
+  .palette-display {
+    background: var(--cream);
+    padding: 80px 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .palette-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+
+  .palette-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .palettes-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .palette-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .palette-swatches {
+    display: flex;
+    height: 80px;
+  }
+
+  .swatch {
+    flex: 1;
+  }
+
+  .palette-info {
+    padding: 20px;
+    background: white;
+  }
+
+  .palette-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+
+  .palette-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .palette-hex-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .hex-chip {
+    font-size: 10px;
+    font-family: monospace;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: var(--cream);
+    color: var(--charcoal-mid);
+    border: 1px solid var(--border);
+  }
+
+  /* PRODUCT PLACEHOLDER IMAGES (SVG-based) */
+  .product-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  /* Animations */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-content > * {
+    animation: fade-up 0.7s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-badge { animation-delay: 0.1s; }
+  .hero-headline { animation-delay: 0.25s; }
+  .hero-sub { animation-delay: 0.4s; }
+  .hero-cta { animation-delay: 0.55s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Orva <span>Oils</span></a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Shop All</a></li>
+    <li><a href="#">Wellness Rituals</a></li>
+    <li><a href="#">The Alchemist</a></li>
+    <li><a href="#">Pure Organic</a></li>
+    <li><a href="#">Sustainability</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-search">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l3.5 3.5" stroke-linecap="round"/>
+      </svg>
+      Search our apothecary…
+    </button>
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M10 2a4 4 0 100 8 4 4 0 000-8zM4 18c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+    </svg>
+    <div class="cart-badge">
+      <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 3h2l.5 3M7 13h8l2-7H5.5M7 13L6 6M7 13a2 2 0 100 4 2 2 0 000-4zm8 0a2 2 0 100 4 2 2 0 000-4z" stroke-linecap="round"/>
+      </svg>
+      <span class="cart-count">2</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;">
+  <div class="hero-bg-pattern"></div>
+  
+  <!-- Decorative SVG bottle silhouette -->
+  <svg class="hero-bottle-svg" viewBox="0 0 220 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Bottle body -->
+    <path d="M75 160 C40 185 25 240 25 300 C25 380 50 440 110 445 C170 440 195 380 195 300 C195 240 180 185 145 160 L145 80 C145 65 135 55 120 50 L100 50 C85 55 75 65 75 80 Z" fill="rgba(201,168,76,0.08)" stroke="rgba(201,168,76,0.35)" stroke-width="1.5"/>
+    <!-- Neck -->
+    <rect x="88" y="20" width="44" height="35" rx="6" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
+    <!-- Label area -->
+    <rect x="42" y="220" width="136" height="140" rx="4" fill="rgba(201,168,76,0.06)" stroke="rgba(201,168,76,0.2)" stroke-width="0.8"/>
+    <!-- Label text lines -->
+    <line x1="70" y1="255" x2="150" y2="255" stroke="rgba(201,168,76,0.25)" stroke-width="0.8"/>
+    <line x1="80" y1="275" x2="140" y2="275" stroke="rgba(201,168,76,0.15)" stroke-width="0.8"/>
+    <line x1="60" y1="295" x2="160" y2="295" stroke="rgba(201,168,76,0.15)" stroke-width="0.8"/>
+    <!-- Mandala motif in label -->
+    <circle cx="110" cy="340" r="22" fill="none" stroke="rgba(201,168,76,0.2)" stroke-width="0.8"/>
+    <circle cx="110" cy="340" r="14" fill="none" stroke="rgba(201,168,76,0.15)" stroke-width="0.8"/>
+    <circle cx="110" cy="340" r="5" fill="rgba(201,168,76,0.2)"/>
+    <!-- Oil fill suggestion -->
+    <ellipse cx="110" cy="380" rx="65" ry="8" fill="rgba(201,168,76,0.06)"/>
+  </svg>
+
+  <div class="hero-content">
+    <span class="hero-badge">✦ New Arrival</span>
+    <h1 class="hero-headline">Sacred Wood<br><em>Aromatherapy</em></h1>
+    <p class="hero-sub">Ancient sandalwood, ethically sourced and cold pressed to preserve its divine essence. Your journey to stillness begins here.</p>
+    <a href="#" class="hero-cta">
+      Explore The Ritual
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M3 8h10M9 4l4 4-4 4"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    Scroll to explore
+  </div>
+
+  <div class="hero-dots">
+    <div class="hero-dot active"></div>
+    <div class="hero-dot"></div>
+    <div class="hero-dot"></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item"><span class="ticker-dot"></span>Cold Pressed · Zero Additives</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>100% Biodegradable Packaging</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Lab Verified Every Batch</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Single-Origin Botanicals</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Free Delivery Above ₹999</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Cold Pressed · Zero Additives</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>100% Biodegradable Packaging</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Lab Verified Every Batch</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Single-Origin Botanicals</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Free Delivery Above ₹999</span>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products-section">
+  <div class="products-header">
+    <div>
+      <div class="section-label">Our Collection</div>
+      <h2 class="section-title">Pure <em>Potency</em></h2>
+      <p style="font-size:13px;color:var(--muted);margin-top:6px;font-weight:300;">Single-origin botanicals, zero additives.</p>
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active">All Oils</button>
+      <button class="filter-tab">Carrier</button>
+      <button class="filter-tab">Essential</button>
+      <button class="filter-tab">Millets</button>
+    </div>
+  </div>
+
+  <div class="products-grid">
+    <!-- Card 1 -->
+    <div class="product-card">
+      <div class="product-img-wrap" style="background:#DDD8CC;">
+        <span class="product-badge badge-organic">Pure Organic</span>
+        <svg viewBox="0 0 200 200" width="140" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="100" cy="145" rx="30" ry="8" fill="rgba(90,80,40,0.1)"/>
+          <path d="M85 50 C72 65 65 90 65 120 C65 148 78 162 100 163 C122 162 135 148 135 120 C135 90 128 65 115 50 L115 25 C115 18 108 14 100 14 C92 14 85 18 85 25Z" fill="#C5A96B" stroke="#9A7A2E" stroke-width="1.5"/>
+          <rect x="90" y="10" width="20" height="16" rx="4" fill="#B89B5E"/>
+          <rect x="76" y="85" width="48" height="55" rx="3" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+          <text x="100" y="108" text-anchor="middle" font-family="serif" font-size="7" fill="rgba(255,255,255,0.7)" letter-spacing="1">VIRGIN</text>
+          <text x="100" y="122" text-anchor="middle" font-family="serif" font-size="9" fill="rgba(255,255,255,0.9)" letter-spacing="0.5">Castor</text>
+          <text x="100" y="133" text-anchor="middle" font-family="serif" font-size="7" fill="rgba(255,255,255,0.6)" letter-spacing="1">OIL</text>
+          <ellipse cx="100" cy="150" rx="25" ry="4" fill="rgba(180,140,60,0.3)"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="product-name">Virgin Castor Oil</div>
+        <div class="product-desc">Cold-extracted, unrefined · Hair & skin</div>
+        <div class="product-controls">
+          <div class="product-select-row">
+            <span class="product-select-label">Volume</span>
+            <select class="product-select">
+              <option>100ml</option>
+              <option>250ml</option>
+              <option>500ml</option>
+            </select>
+          </div>
+        </div>
+        <div class="product-price-row">
+          <div class="product-price"><span class="currency">₹</span>850</div>
+        </div>
+        <br>
+        <button class="add-to-cart">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 3h2l.5 3M7 13h8l2-7H5.5"/><circle cx="7" cy="17" r="1.5" fill="currentColor"/><circle cx="15" cy="17" r="1.5" fill="currentColor"/></svg>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="product-card">
+      <div class="product-img-wrap" style="background:#E8E4DA;">
+        <span class="product-badge badge-bestseller">Best Seller</span>
+        <svg viewBox="0 0 200 200" width="140" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="100" cy="148" rx="28" ry="7" fill="rgba(80,70,40,0.1)"/>
+          <path d="M82 52 C70 68 63 93 63 122 C63 150 76 163 100 164 C124 163 137 150 137 122 C137 93 130 68 118 52 L118 27 C118 20 110 15 100 15 C90 15 82 20 82 27Z" fill="#E8D49A" stroke="#C9A84C" stroke-width="1.5"/>
+          <rect x="88" y="12" width="24" height="17" rx="4" fill="#D4B870"/>
+          <rect x="74" y="88" width="52" height="52" rx="3" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.25)" stroke-width="0.8"/>
+          <text x="100" y="110" text-anchor="middle" font-family="serif" font-size="7" fill="rgba(100,70,10,0.8)" letter-spacing="1">COLD PRESSED</text>
+          <text x="100" y="124" text-anchor="middle" font-family="serif" font-size="10" fill="rgba(80,50,10,0.9)">Coconut</text>
+          <text x="100" y="136" text-anchor="middle" font-family="serif" font-size="7" fill="rgba(100,70,10,0.7)" letter-spacing="0.5">200ml Glass Jar</text>
+          <circle cx="86" cy="68" r="8" fill="rgba(255,255,255,0.4)"/>
+          <circle cx="114" cy="72" r="6" fill="rgba(255,255,255,0.3)"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="product-name">Cold-Pressed Coconut</div>
+        <div class="product-desc">Virgin, glass-jar packed · Cooking & body</div>
+        <div class="product-controls">
+          <div class="product-select-row">
+            <span class="product-select-label">Quantity</span>
+            <select class="product-select">
+              <option>200ml Glass Jar</option>
+              <option>500ml Glass Jar</option>
+              <option>1L Tin</option>
+            </select>
+          </div>
+        </div>
+        <div class="product-price-row">
+          <div class="product-price"><span class="currency">₹</span>420</div>
+        </div>
+        <br>
+        <button class="add-to-cart">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 3h2l.5 3M7 13h8l2-7H5.5"/><circle cx="7" cy="17" r="1.5" fill="currentColor"/><circle cx="15" cy="17" r="1.5" fill="currentColor"/></svg>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="product-card">
+      <div class="product-img-wrap" style="background:#D8D0BC;">
+        <svg viewBox="0 0 200 200" width="140" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="100" cy="150" rx="26" ry="6" fill="rgba(60,40,20,0.15)"/>
+          <path d="M84 48 C72 63 66 88 66 118 C66 148 79 162 100 163 C121 162 134 148 134 118 C134 88 128 63 116 48 L116 24 C116 17 109 12 100 12 C91 12 84 17 84 24Z" fill="#B8965E" stroke="#8B6E3A" stroke-width="1.5"/>
+          <rect x="88" y="9" width="24" height="16" rx="4" fill="#A07A40"/>
+          <ellipse cx="100" cy="68" rx="16" ry="4" fill="rgba(255,255,255,0.1)"/>
+          <rect x="76" y="86" width="48" height="54" rx="3" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+          <text x="100" y="108" text-anchor="middle" font-family="serif" font-size="7" fill="rgba(255,255,255,0.65)" letter-spacing="0.8">MOROCCAN</text>
+          <text x="100" y="122" text-anchor="middle" font-family="serif" font-size="10" fill="rgba(255,255,255,0.88)">Argan</text>
+          <text x="100" y="134" text-anchor="middle" font-family="serif" font-size="7" fill="rgba(255,255,255,0.55)" letter-spacing="0.5">30ml Ritual</text>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="product-name">Moroccan Argan</div>
+        <div class="product-desc">First press, authentic · Skin & hair elixir</div>
+        <div class="product-controls">
+          <div class="product-select-row">
+            <span class="product-select-label">Volume</span>
+            <select class="product-select">
+              <option>30ml Ritual</option>
+              <option>60ml</option>
+              <option>100ml</option>
+            </select>
+          </div>
+        </div>
+        <div class="product-price-row">
+          <div class="product-price"><span class="currency">₹</span>1,250</div>
+        </div>
+        <br>
+        <button class="add-to-cart">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 3h2l.5 3M7 13h8l2-7H5.5"/><circle cx="7" cy="17" r="1.5" fill="currentColor"/><circle cx="15" cy="17" r="1.5" fill="currentColor"/></svg>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="product-card">
+      <div class="product-img-wrap" style="background:#C8C4B0;">
+        <span class="product-badge badge-limited">Limited Edition</span>
+        <svg viewBox="0 0 200 200" width="140" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="100" cy="150" rx="26" ry="6" fill="rgba(60,50,20,0.1)"/>
+          <path d="M83 50 C71 66 64 91 64 120 C64 149 77 163 100 164 C123 163 136 149 136 120 C136 91 129 66 117 50 L117 25 C117 18 110 13 100 13 C90 13 83 18 83 25Z" fill="#D4C97A" stroke="#B8A830" stroke-width="1.5"/>
+          <rect x="87" y="10" width="26" height="16" rx="4" fill="#C0B060"/>
+          <rect x="75" y="87" width="50" height="52" rx="3" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
+          <text x="100" y="108" text-anchor="middle" font-family="serif" font-size="7" fill="rgba(60,50,10,0.8)" letter-spacing="0.8">GOLDEN</text>
+          <text x="100" y="123" text-anchor="middle" font-family="serif" font-size="10" fill="rgba(50,40,10,0.9)">Jojoba</text>
+          <text x="100" y="135" text-anchor="middle" font-family="serif" font-size="7" fill="rgba(60,50,10,0.65)" letter-spacing="0.5">100ml</text>
+          <path d="M140 80 C148 72 150 60 144 54" stroke="rgba(180,160,40,0.5)" stroke-width="1" fill="none"/>
+          <circle cx="148" cy="52" r="5" fill="rgba(180,160,40,0.4)"/>
+          <path d="M130 85 C136 79 138 70 134 65" stroke="rgba(180,160,40,0.35)" stroke-width="0.8" fill="none"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="product-name">Golden Jojoba</div>
+        <div class="product-desc">Desert harvested, wax-free · Anti-ageing</div>
+        <div class="product-controls">
+          <div class="product-select-row">
+            <span class="product-select-label">Volume</span>
+            <select class="product-select">
+              <option>100ml</option>
+              <option>30ml</option>
+              <option>250ml</option>
+            </select>
+          </div>
+        </div>
+        <div class="product-price-row">
+          <div class="product-price"><span class="currency">₹</span>980</div>
+        </div>
+        <br>
+        <button class="add-to-cart">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 3h2l.5 3M7 13h8l2-7H5.5"/><circle cx="7" cy="17" r="1.5" fill="currentColor"/><circle cx="15" cy="17" r="1.5" fill="currentColor"/></svg>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PURITY SECTION -->
+<div class="purity-section">
+  <div class="purity-content">
+    <div class="section-label">Our Philosophy</div>
+    <h2 class="section-title">The Alchemist's<br><em>Standard of Purity</em></h2>
+    <p class="purity-body">We don't just extract oils; we preserve spirits. Our alchemists follow seasonal cycles and moon phases to ensure every drop carries the maximum biological frequency of the plant.</p>
+    <a href="#" class="purity-link">
+      Read Our Manifesto
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+    </a>
+  </div>
+  <div class="purity-badges">
+    <div class="purity-badge-card">
+      <div class="purity-badge-icon icon-green">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7A8B50" stroke-width="1.5" stroke-linecap="round">
+          <path d="M12 2C6.5 8 4 12 4 16a8 8 0 0016 0c0-4-2.5-8-8-14z"/>
+          <path d="M12 12v6M12 12C10 10 8 9 6 9"/>
+        </svg>
+      </div>
+      <div>
+        <div class="purity-badge-title">100% Biodegradable</div>
+        <div class="purity-badge-sub">Our packaging returns to the earth as gracefully as our oils.</div>
+      </div>
+    </div>
+    <div class="purity-badge-card">
+      <div class="purity-badge-icon icon-gold">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round">
+          <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="purity-badge-title">Lab Verified</div>
+        <div class="purity-badge-sub">Every batch is tested for terpene profiles and zero heavy metals.</div>
+      </div>
+    </div>
+    <div class="purity-badge-card">
+      <div class="purity-badge-icon icon-blue">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7A9DBF" stroke-width="1.5" stroke-linecap="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="purity-badge-title">Ethically Sourced</div>
+        <div class="purity-badge-sub">Direct farmer partnerships across India and North Africa.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter-section">
+  <div class="newsletter-left">
+    <div class="section-label">The Alchemist's Letter</div>
+    <h2 class="newsletter-title">Receive seasonal wellness<br>protocols & <em>rare pressings</em></h2>
+  </div>
+  <form class="newsletter-form" onsubmit="return false;">
+    <input type="email" class="newsletter-input" placeholder="Your email address">
+    <button class="newsletter-btn" type="submit">Join</button>
+  </form>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">Orva <span>Oils</span></div>
+      <p class="footer-tagline">Bringing the wisdom of the Himalayas and the purity of ancient extraction to your modern wellness ritual.</p>
+      <div class="footer-social">
+        <a href="#" class="social-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M16 8v0M6 2h12a4 4 0 014 4v12a4 4 0 01-4 4H6a4 4 0 01-4-4V6a4 4 0 014-4z"/></svg>
+        </a>
+        <a href="#" class="social-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 01-1.93.07 4.28 4.28 0 004 2.98 8.521 8.521 0 01-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/></svg>
+        </a>
+        <a href="#" class="social-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 4l16 16M4 20L20 4"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Curations</div>
+      <ul class="footer-links">
+        <li><a href="#">Hair Rituals</a></li>
+        <li><a href="#">Skin Potions</a></li>
+        <li><a href="#">Sleep Support</a></li>
+        <li><a href="#">Digestion</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">Knowledge</div>
+      <ul class="footer-links">
+        <li><a href="#">Oil Almanac</a></li>
+        <li><a href="#">Our Source</a></li>
+        <li><a href="#">Extraction Labs</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="footer-col-title">The Alchemist's Letter</div>
+      <p class="footer-newsletter-label">Receive seasonal wellness protocols and first access to rare pressings.</p>
+      <div class="footer-newsletter-form">
+        <input type="email" class="footer-email-input" placeholder="Your Email">
+        <button class="footer-join-btn">Join</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-divider"></div>
+
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2024 Orva Oils Apothecary. All Sacred Rights Reserved.</p>
+    <ul class="footer-bottom-links">
+      <li><a href="#">Privacy Protocol</a></li>
+      <li><a href="#">Terms of Service</a></li>
+      <li><a href="#">Shipping & Returns</a></li>
+    </ul>
+  </div>
+</footer>
+
+<!-- COLOUR PALETTES SECTION -->
+<div class="palette-display">
+  <div class="section-label">Colour Palettes</div>
+  <h2 class="palette-title">Suggested Colour Palettes</h2>
+  <p class="palette-subtitle">Four directions — pick one or mix elements from each to suit your brand vision.</p>
+
+  <div class="palettes-grid">
+    <!-- Palette 1 -->
+    <div class="palette-card active-palette" data-palette="forest" style="cursor:pointer;">
+      <div class="palette-swatches">
+        <div class="swatch" style="background:#3D4A26;"></div>
+        <div class="swatch" style="background:#5C6B3A;"></div>
+        <div class="swatch" style="background:#C9A84C;"></div>
+        <div class="swatch" style="background:#F7F3EC;"></div>
+        <div class="swatch" style="background:#2A2A22;"></div>
+      </div>
+      <div class="palette-info">
+        <div class="palette-name">Forest Alchemist <span class="active-tag">✦ Active</span></div>
+        <p class="palette-desc">Deep olive greens anchor the brand in nature and purity. Gold accents reference traditional cold-press heritage and luxury. Warm cream background feels artisanal and organic.</p>
+        <div class="palette-hex-row">
+          <span class="hex-chip">#3D4A26</span><span class="hex-chip">#5C6B3A</span><span class="hex-chip">#C9A84C</span><span class="hex-chip">#F7F3EC</span><span class="hex-chip">#2A2A22</span><span class="hex-chip">#D4622A</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Palette 2 -->
+    <div class="palette-card" data-palette="earth" style="cursor:pointer;">
+      <div class="palette-swatches">
+        <div class="swatch" style="background:#1C1410;"></div>
+        <div class="swatch" style="background:#8B4513;"></div>
+        <div class="swatch" style="background:#C47A3A;"></div>
+        <div class="swatch" style="background:#E8C99A;"></div>
+        <div class="swatch" style="background:#FAF5EE;"></div>
+      </div>
+      <div class="palette-info">
+        <div class="palette-name">Sacred Earth <span class="active-tag" style="display:none;">✦ Active</span></div>
+        <p class="palette-desc">Inspired by cold-press extraction itself — deep espresso, terracotta, and warm amber. These tones evoke the soil and seeds from which the oils are born. Very warm and sensory.</p>
+        <div class="palette-hex-row">
+          <span class="hex-chip">#1C1410</span><span class="hex-chip">#8B4513</span><span class="hex-chip">#C47A3A</span><span class="hex-chip">#E8C99A</span><span class="hex-chip">#FAF5EE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Palette 3 -->
+    <div class="palette-card" data-palette="sage" style="cursor:pointer;">
+      <div class="palette-swatches">
+        <div class="swatch" style="background:#2C3028;"></div>
+        <div class="swatch" style="background:#7A8C6E;"></div>
+        <div class="swatch" style="background:#B5C4A0;"></div>
+        <div class="swatch" style="background:#F0EDE5;"></div>
+        <div class="swatch" style="background:#FFFFFF;"></div>
+      </div>
+      <div class="palette-info">
+        <div class="palette-name">Sage & Linen <span class="active-tag" style="display:none;">✦ Active</span></div>
+        <p class="palette-desc">A softer, more minimal direction — muted sage greens on near-white. Clean, clinical purity. Lets the product photography breathe. Works beautifully for the wellness & skincare angle.</p>
+        <div class="palette-hex-row">
+          <span class="hex-chip">#2C3028</span><span class="hex-chip">#7A8C6E</span><span class="hex-chip">#B5C4A0</span><span class="hex-chip">#F0EDE5</span><span class="hex-chip">#FFFFFF</span>
+        </div>
+      </div>
+    </div>
+    <!-- Palette 4 - Autumn Harvest -->
+    <div class="palette-card" data-palette="autumn" style="cursor:pointer;">
+      <div class="palette-swatches">
+        <div class="swatch" style="background:#FFFFFF;"></div>
+        <div class="swatch" style="background:#C97A48;"></div>
+        <div class="swatch" style="background:#5C7A5A;"></div>
+        <div class="swatch" style="background:#7BA3B0;"></div>
+        <div class="swatch" style="background:#F5F0EA;"></div>
+      </div>
+      <div class="palette-info">
+        <div class="palette-name">Autumn Harvest <span class="active-tag" style="display:none;">✦ Active</span></div>
+        <p class="palette-desc">Dusty burnt sienna and muted fern green on an airy white canvas — like late October light through leaves. A whisper of slate blue cools the warmth and adds quiet sophistication.</p>
+        <div class="palette-hex-row">
+          <span class="hex-chip">#FFFFFF</span><span class="hex-chip">#C97A48</span><span class="hex-chip">#5C7A5A</span><span class="hex-chip">#7BA3B0</span><span class="hex-chip">#F5F0EA</span><span class="hex-chip">#3D5E66</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .palette-card {
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .palette-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  }
+  .palette-card.active-palette {
+    outline: 2.5px solid var(--olive);
+    outline-offset: 2px;
+  }
+  .active-tag {
+    font-size: 11px;
+    color: var(--olive);
+    font-weight: 500;
+    margin-left: 6px;
+  }
+  body { transition: background 0.5s, color 0.5s; }
+  :root { transition: --cream 0.5s; }
+</style>
+
+<script>
+  // Filter tabs
+  document.querySelectorAll('.filter-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Hero dots
+  document.querySelectorAll('.hero-dot').forEach((dot) => {
+    dot.addEventListener('click', () => {
+      document.querySelectorAll('.hero-dot').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+    });
+  });
+
+  // Palette definitions
+  const palettes = {
+    forest: {
+      '--cream': '#F7F3EC',
+      '--warm-white': '#FDFAF5',
+      '--olive': '#5C6B3A',
+      '--olive-light': '#7A8B50',
+      '--olive-dark': '#3D4A26',
+      '--gold': '#C9A84C',
+      '--gold-light': '#E2C97E',
+      '--gold-dark': '#9A7A2E',
+      '--charcoal': '#2A2A22',
+      '--charcoal-mid': '#4A4A3A',
+      '--muted': '#7A7868',
+      '--orange-accent': '#D4622A',
+      '--border': 'rgba(90,80,50,0.15)',
+      '--border-mid': 'rgba(90,80,50,0.25)',
+      '--hero-bg': 'linear-gradient(135deg, #1a1f0e 0%, #2d3520 40%, #3d4a26 100%)',
+      '--footer-bg': '#18180F',
+      '--purity-bg': '#2A2A22',
+      '--purity-dark': '#222219',
+      '--newsletter-bg': '#3D4A26',
+      '--ticker-bg': '#3D4A26',
+    },
+    earth: {
+      '--cream': '#F5EEE4',
+      '--warm-white': '#FBF6EF',
+      '--olive': '#8B4513',
+      '--olive-light': '#A0562A',
+      '--olive-dark': '#6B3010',
+      '--gold': '#C47A3A',
+      '--gold-light': '#DDA060',
+      '--gold-dark': '#8B5520',
+      '--charcoal': '#1C1410',
+      '--charcoal-mid': '#3A2A1A',
+      '--muted': '#8A7060',
+      '--orange-accent': '#C04A20',
+      '--border': 'rgba(100,60,20,0.15)',
+      '--border-mid': 'rgba(100,60,20,0.25)',
+      '--hero-bg': 'linear-gradient(135deg, #0e0a06 0%, #2a1508 40%, #3d1f0a 100%)',
+      '--footer-bg': '#0E0A06',
+      '--purity-bg': '#1C1410',
+      '--purity-dark': '#160E08',
+      '--newsletter-bg': '#6B3010',
+      '--ticker-bg': '#6B3010',
+    },
+    sage: {
+      '--cream': '#F0EDE5',
+      '--warm-white': '#F8F6F2',
+      '--olive': '#7A8C6E',
+      '--olive-light': '#9AAE8C',
+      '--olive-dark': '#2C3028',
+      '--gold': '#9AAE8C',
+      '--gold-light': '#B5C4A0',
+      '--gold-dark': '#5C7050',
+      '--charcoal': '#2C3028',
+      '--charcoal-mid': '#4A5045',
+      '--muted': '#7A8070',
+      '--orange-accent': '#7A8C6E',
+      '--border': 'rgba(60,70,50,0.15)',
+      '--border-mid': 'rgba(60,70,50,0.25)',
+      '--hero-bg': 'linear-gradient(135deg, #1a1e18 0%, #262e22 40%, #2c3028 100%)',
+      '--footer-bg': '#1A1E18',
+      '--purity-bg': '#2C3028',
+      '--purity-dark': '#222620',
+      '--newsletter-bg': '#2C3028',
+      '--ticker-bg': '#2C3028',
+    },
+    autumn: {
+      '--cream': '#F5F0EA',
+      '--warm-white': '#FDFBF8',
+      '--olive': '#5C7A5A',
+      '--olive-light': '#7A9878',
+      '--olive-dark': '#3D5E66',
+      '--gold': '#C97A48',
+      '--gold-light': '#DFA070',
+      '--gold-dark': '#A05A30',
+      '--charcoal': '#2C3830',
+      '--charcoal-mid': '#4A5C55',
+      '--muted': '#7A8C85',
+      '--orange-accent': '#C97A48',
+      '--border': 'rgba(60,90,85,0.12)',
+      '--border-mid': 'rgba(60,90,85,0.22)',
+      '--hero-bg': 'linear-gradient(135deg, #1e2e2a 0%, #243830 40%, #2c3838 100%)',
+      '--footer-bg': '#1A2824',
+      '--purity-bg': '#243830',
+      '--purity-dark': '#1C2E28',
+      '--newsletter-bg': '#3D5E66',
+      '--ticker-bg': '#5C7A5A',
+    }
+  };
+
+  function applyPalette(name) {
+    const vars = palettes[name];
+    const root = document.documentElement;
+
+    // Apply CSS vars with transition
+    root.style.setProperty('--transition-speed', '0.5s');
+    Object.entries(vars).forEach(([key, val]) => {
+      root.style.setProperty(key, val);
+    });
+
+    // Update specific bg elements that use hardcoded colours
+    const hero = document.querySelector('.hero');
+    if (hero) hero.style.background = vars['--hero-bg'];
+
+    const footer = document.querySelector('footer');
+    if (footer) footer.style.background = vars['--footer-bg'];
+
+    const purityContent = document.querySelector('.purity-section');
+    if (purityContent) purityContent.style.background = vars['--purity-bg'];
+
+    const purityBadges = document.querySelector('.purity-badges');
+    if (purityBadges) purityBadges.style.background = vars['--purity-dark'];
+
+    const newsletter = document.querySelector('.newsletter-section');
+    if (newsletter) newsletter.style.background = vars['--newsletter-bg'];
+
+    const ticker = document.querySelector('.ticker');
+    if (ticker) ticker.style.background = vars['--ticker-bg'];
+
+    // Update palette card active states
+    document.querySelectorAll('.palette-card').forEach(card => {
+      card.classList.remove('active-palette');
+      const tag = card.querySelector('.active-tag');
+      if (tag) tag.style.display = 'none';
+    });
+    const activeCard = document.querySelector(`[data-palette="${name}"]`);
+    if (activeCard) {
+      activeCard.classList.add('active-palette');
+      const tag = activeCard.querySelector('.active-tag');
+      if (tag) tag.style.display = 'inline';
+    }
+
+    // Scroll to top smoothly so user sees the change
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Add click listeners to palette cards
+  document.querySelectorAll('.palette-card[data-palette]').forEach(card => {
+    card.addEventListener('click', () => {
+      applyPalette(card.dataset.palette);
+    });
+  });
+
+  // Add "Click to apply" hint
+  document.querySelectorAll('.palette-card[data-palette]').forEach(card => {
+    const info = card.querySelector('.palette-info');
+    const hint = document.createElement('p');
+    hint.style.cssText = 'font-size:11px;color:var(--olive);margin-top:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;opacity:0.7;';
+    hint.textContent = '↑ Click to apply theme';
+    info.appendChild(hint);
+  });
+</script>
+
+</body>
+</html>

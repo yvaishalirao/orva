@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e7e1df",
+                        "on-tertiary-fixed": "#281803",
+                        "primary-fixed": "#d6e3ff",
+                        "inverse-surface": "#32302e",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#737781",
+                        "surface": "#fef8f5",
+                        "on-surface": "#1d1b1a",
+                        "on-tertiary-fixed-variant": "#584329",
+                        "tertiary-fixed-dim": "#e0c29f",
+                        "on-primary-fixed-variant": "#0f4685",
+                        "on-primary-container": "#9abfff",
+                        "on-surface-variant": "#424750",
+                        "surface-container-high": "#ede7e4",
+                        "surface-container-highest": "#e7e1df",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffdbcd",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f5f0ed",
+                        "on-tertiary-container": "#d7b997",
+                        "tertiary-fixed": "#fdddb9",
+                        "surface-bright": "#fef8f5",
+                        "on-secondary-fixed-variant": "#7c2e00",
+                        "secondary-container": "#fc7127",
+                        "surface-tint": "#315f9f",
+                        "on-secondary-container": "#5c2000",
+                        "error-container": "#ffdad6",
+                        "on-background": "#1d1b1a",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#a8c8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#00366d",
+                        "background": "#fef8f5",
+                        "surface-container-low": "#f8f2f0",
+                        "secondary-fixed-dim": "#ffb595",
+                        "primary-container": "#1a4d8c",
+                        "tertiary": "#46331a",
+                        "outline-variant": "#c3c6d2",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-container": "#f2edea",
+                        "on-secondary-fixed": "#351000",
+                        "tertiary-container": "#5f492e",
+                        "surface-dim": "#ded9d6",
+                        "secondary": "#a23f00",
+                        "primary-fixed-dim": "#a8c8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .premium-gradient {
+            background: linear-gradient(135deg, #00366d 0%, #1a4d8c 100%);
+        }
+        .hero-overlay {
+            background: linear-gradient(to right, rgba(29, 27, 26, 0.7) 0%, rgba(29, 27, 26, 0) 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar Component -->
+<header class="fixed top-0 w-full z-50 bg-[#fef8f5]/80 dark:bg-slate-900/80 backdrop-blur-xl bg-surface-container-low shadow-sm">
+<nav class="flex justify-between items-center w-full px-12 py-6 max-w-[1920px] mx-auto">
+<div class="flex items-center gap-12">
+<a class="text-2xl font-bold tracking-tighter text-[#1A4D8C] dark:text-blue-300" href="#">Orva Oils</a>
+<ul class="hidden md:flex gap-8">
+<li><a class="font-['Manrope'] tracking-tight font-semibold uppercase text-xs text-[#1A4D8C] border-b-2 border-[#1A4D8C] pb-1 hover:text-[#1A4D8C] hover:opacity-100 transition-all duration-300" href="#">Shop All</a></li>
+<li><a class="font-['Manrope'] tracking-tight font-semibold uppercase text-xs text-[#1d1b1a] dark:text-slate-300 opacity-70 hover:text-[#1A4D8C] hover:opacity-100 transition-all duration-300" href="#">Wellness Rituals</a></li>
+<li><a class="font-['Manrope'] tracking-tight font-semibold uppercase text-xs text-[#1d1b1a] dark:text-slate-300 opacity-70 hover:text-[#1A4D8C] hover:opacity-100 transition-all duration-300" href="#">The Alchemist</a></li>
+<li><a class="font-['Manrope'] tracking-tight font-semibold uppercase text-xs text-[#1d1b1a] dark:text-slate-300 opacity-70 hover:text-[#1A4D8C] hover:opacity-100 transition-all duration-300" href="#">Pure Organic</a></li>
+<li><a class="font-['Manrope'] tracking-tight font-semibold uppercase text-xs text-[#1d1b1a] dark:text-slate-300 opacity-70 hover:text-[#1A4D8C] hover:opacity-100 transition-all duration-300" href="#">Sustainability</a></li>
+</ul>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group hidden lg:block">
+<input class="bg-surface-container border-none rounded-full px-6 py-2 text-sm w-64 focus:ring-2 focus:ring-primary-container transition-all" placeholder="Search our apothecary..." type="text"/>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+</div>
+<div class="flex gap-4">
+<button class="scale-95 active:scale-90 transition-transform text-[#1A4D8C]">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+<button class="scale-95 active:scale-90 transition-transform text-[#1A4D8C] relative">
+<span class="material-symbols-outlined">shopping_basket</span>
+<span class="absolute -top-1 -right-1 bg-secondary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">0</span>
+</button>
+</div>
+</div>
+</nav>
+</header>
+<main class="pt-24">
+<!-- Hero Section: Promotional Stories Carousel -->
+<section class="relative h-[870px] overflow-hidden bg-surface-container-low">
+<div class="absolute inset-0 flex transition-transform duration-1000 ease-in-out">
+<!-- Slide 1 -->
+<div class="relative min-w-full h-full">
+<img alt="Premium Cold Pressed Oil" class="w-full h-full object-cover" data-alt="Close-up of golden viscous oil pouring from a glass dropper into a dark amber bottle, sunbeams filtering through greenery in background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkfpE1xcqkkGreuf_RF40H6kIJBkmideyqaFM7g6JusloBSR4ShdgdCINzPeS1tVN8MYvoBEx2_DXGSGQsjh6zBYEkI1bd9G8-1HDNQuvtiQ62LpLwsuHCmW8FA54zsT16uatmGsHKyl00qULa4Q9F3FqFwaLMF7HeVjiSgSwh7Rc2JeNcYx15LyJ0eDXm621ro4BzOhyW_XiZyVJir-41z2EuwTjhUx-1fsjXWLMFaBiiTlLNrNBll3vFY7fWEXcGtela3EvOes-I"/>
+<div class="absolute inset-0 hero-overlay flex items-center px-12 md:px-24">
+<div class="max-w-2xl text-white">
+<span class="bg-secondary px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6 inline-block">New Arrival</span>
+<h1 class="text-6xl md:text-8xl font-headline font-extrabold tracking-tighter mb-6 leading-tight">Sacred Wood <br/>Aromatherapy</h1>
+<p class="text-lg md:text-xl font-body opacity-90 mb-10 leading-relaxed max-w-lg">Ancient sandalwood, ethically sourced and cold-pressed to preserve its divine essence. Your journey to stillness begins here.</p>
+<button class="premium-gradient px-8 py-4 rounded-xl font-bold text-on-primary flex items-center gap-3 hover:scale-105 transition-transform">
+                                Explore The Ritual <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Carousel Pagination -->
+<div class="absolute bottom-12 right-12 flex gap-3">
+<div class="w-12 h-1 bg-white opacity-100 rounded-full"></div>
+<div class="w-12 h-1 bg-white opacity-30 rounded-full"></div>
+<div class="w-12 h-1 bg-white opacity-30 rounded-full"></div>
+</div>
+</section>
+<!-- Product Grid Section -->
+<section class="max-w-[1920px] mx-auto px-12 py-24 bg-surface">
+<div class="flex justify-between items-end mb-16">
+<div>
+<h2 class="text-4xl font-headline font-bold text-primary tracking-tight">Pure Potency</h2>
+<p class="text-on-surface-variant mt-2">Single-origin botanicals, zero additives.</p>
+</div>
+<div class="flex gap-4">
+<span class="bg-surface-container-highest px-6 py-2 rounded-full text-sm font-semibold cursor-pointer">All Oils</span>
+<span class="bg-surface-container-low px-6 py-2 rounded-full text-sm font-semibold opacity-60 cursor-pointer hover:opacity-100 transition-opacity">Carrier</span>
+<span class="bg-surface-container-low px-6 py-2 rounded-full text-sm font-semibold opacity-60 cursor-pointer hover:opacity-100 transition-opacity">Essential</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+<!-- Product Card 1 -->
+<div class="group">
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden mb-6 aspect-[4/5] relative flex items-center justify-center p-8 transition-all group-hover:shadow-xl group-hover:-translate-y-2">
+<div class="absolute top-4 left-4">
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-3 py-1 rounded-full uppercase">Pure Organic</span>
+</div>
+<img alt="Castor Oil" class="max-h-full object-contain" data-alt="Studio photograph of a minimalist amber glass bottle of castor oil with a white label, soft shadow on a cream background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMHiQZcHjTWqIm_OF8hZKrtWcPPaSA4ZdnT3kSGkFt1qTkGzX4lrIFcsyKucDuU4U6TyEy8F4-FmXcFojUb7WYJOklSawhLP7Ind_LG1khed6rityVwUi55uRlvWnevtSYcHYTn_RbhXfU0LAcMNKBdCmpb1M2xJN9cVUi5h2KjWbP2BHHgb20eFOX_aijFs2I4hw6Gr1-3_DfPCq8dOtKl61Q7tm5l9uvcW95WVutEKQTMVIxW6VSymERSprsGD_RRhT8_bPmPotC"/>
+<button class="absolute bottom-4 right-4 bg-white/90 backdrop-blur text-primary p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0 shadow-lg">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-start">
+<h3 class="text-xl font-headline font-bold text-on-surface">Virgin Castor Oil</h3>
+<span class="text-xl font-headline font-bold text-primary">₹850</span>
+</div>
+<div class="flex gap-4">
+<div class="flex-1">
+<label class="text-[10px] font-bold uppercase text-on-surface-variant block mb-1">Volume</label>
+<select class="w-full bg-surface-container-low border-none rounded-xl text-sm focus:ring-primary-container">
+<option>100ml</option>
+<option>250ml</option>
+<option>500ml</option>
+</select>
+</div>
+</div>
+<button class="w-full premium-gradient text-on-primary py-4 rounded-xl font-bold flex items-center justify-center gap-2 group-hover:shadow-lg transition-all active:scale-[0.98]">
+                            Add to Cart <span class="material-symbols-outlined text-lg">shopping_bag</span>
+</button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group">
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden mb-6 aspect-[4/5] relative flex items-center justify-center p-8 transition-all group-hover:shadow-xl group-hover:-translate-y-2">
+<div class="absolute top-4 left-4">
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-3 py-1 rounded-full uppercase">Best Seller</span>
+</div>
+<img alt="Coconut Oil" class="max-h-full object-contain" data-alt="Organic extra virgin coconut oil in a clear glass jar with a minimalist label, surrounded by coconut shards on a clean white surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH-pqp4lw4eQnF8utwI115uVgU8Se2UDCoJaOODKfimRu7ujNHrikh1fIJpJxlbhm_rfinCCkdpdyEaM9Tiitvf_GbcyIngjA6e_seFsW1XPVr56iNl9gEDevBcXxuhhrhmiqE9Z3Ye_IQC1ddd-NEKYAA7v6JqjrbF8GO0jego_ltT5wnCUZGs3krCUCQcVxeZMsoMqdRDsYioIiHgXehDhRRgqS9zKqo_Bu4Mlh4VjJ4LPuQKPAIRHxdaIkQxim5q5Nl7_N0Vqwc"/>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-start">
+<h3 class="text-xl font-headline font-bold text-on-surface">Cold-Pressed Coconut</h3>
+<span class="text-xl font-headline font-bold text-primary">₹420</span>
+</div>
+<div class="flex gap-4">
+<div class="flex-1">
+<label class="text-[10px] font-bold uppercase text-on-surface-variant block mb-1">Quantity</label>
+<select class="w-full bg-surface-container-low border-none rounded-xl text-sm focus:ring-primary-container">
+<option>200ml Glass Jar</option>
+<option>500ml Refill</option>
+</select>
+</div>
+</div>
+<button class="w-full premium-gradient text-on-primary py-4 rounded-xl font-bold flex items-center justify-center gap-2 group-hover:shadow-lg transition-all active:scale-[0.98]">
+                            Add to Cart <span class="material-symbols-outlined text-lg">shopping_bag</span>
+</button>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group">
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden mb-6 aspect-[4/5] relative flex items-center justify-center p-8 transition-all group-hover:shadow-xl group-hover:-translate-y-2">
+<img alt="Argan Oil" class="max-h-full object-contain" data-alt="Amber glass spray bottle of Moroccan Argan oil with a clean black label, studio lighting against a warm beige background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZmb8U266hRFLJfXT9RN9uu8kbZwenxEXzSdbs0GZwmYtXQt3wPmyYooe3PqQSfHiO17tf_Gh0Z2eN_uUQacxudJnZcyU5mQJTQPGxjOTqUzgLzkoPkD4Do73uc0Ul3JCFEamJE5rUhf0H74RhlQkeVEFQVu_uypkK6kUljsRzTkOJKYSOJEJ3v9shhepM8SnlIcM0NRpemp0Ly-DMeVjmvgApRXdwdPz_yD78JC5Jd_Go7Iv2p7fWmcKD3uzFm_uuSQ5532rL1vsQ"/>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-start">
+<h3 class="text-xl font-headline font-bold text-on-surface">Moroccan Argan</h3>
+<span class="text-xl font-headline font-bold text-primary">₹1,250</span>
+</div>
+<div class="flex gap-4">
+<div class="flex-1">
+<label class="text-[10px] font-bold uppercase text-on-surface-variant block mb-1">Volume</label>
+<select class="w-full bg-surface-container-low border-none rounded-xl text-sm focus:ring-primary-container">
+<option>30ml Ritual</option>
+<option>100ml Ritual</option>
+</select>
+</div>
+</div>
+<button class="w-full premium-gradient text-on-primary py-4 rounded-xl font-bold flex items-center justify-center gap-2 group-hover:shadow-lg transition-all active:scale-[0.98]">
+                            Add to Cart <span class="material-symbols-outlined text-lg">shopping_bag</span>
+</button>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group">
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden mb-6 aspect-[4/5] relative flex items-center justify-center p-8 transition-all group-hover:shadow-xl group-hover:-translate-y-2">
+<div class="absolute top-4 left-4">
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-3 py-1 rounded-full uppercase">Limited Edition</span>
+</div>
+<img alt="Jojoba Oil" class="max-h-full object-contain" data-alt="Golden jojoba oil in a textured glass bottle, vibrant yellow tones, minimalist elegant branding, studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXXuUNee9TjVkLZaP6GH5DDhIbdCcv0WR6k1gFmGDYHF0AtcBpalN0FSCjZxtnyLBxeTToY3BhuHujQPUgUo37YFedwJSraTDeQsvOP3XcwaTRpoZhMDOrkRfJ_T04iaaAWXHOo-zpcW055tOSRGdI21SyzakMNJGYuZ-uQw_q5gExD87801sKDKchpxG-nuetFQAdk9USG1C_nRJl-pHkKnwVvIXOgfT4HP88K2Fuff9vxEFVxYBnUoOSakf0I6uuo3vAzk_UvOSu"/>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-start">
+<h3 class="text-xl font-headline font-bold text-on-surface">Golden Jojoba</h3>
+<span class="text-xl font-headline font-bold text-primary">₹980</span>
+</div>
+<div class="flex gap-4">
+<div class="flex-1">
+<label class="text-[10px] font-bold uppercase text-on-surface-variant block mb-1">Volume</label>
+<select class="w-full bg-surface-container-low border-none rounded-xl text-sm focus:ring-primary-container">
+<option>100ml</option>
+<option>250ml</option>
+</select>
+</div>
+</div>
+<button class="w-full premium-gradient text-on-primary py-4 rounded-xl font-bold flex items-center justify-center gap-2 group-hover:shadow-lg transition-all active:scale-[0.98]">
+                            Add to Cart <span class="material-symbols-outlined text-lg">shopping_bag</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- The Alchemist Philosophy (Bento-style section) -->
+<section class="max-w-[1920px] mx-auto px-12 py-24 bg-surface-container-low">
+<div class="grid grid-cols-12 gap-8 h-[700px]">
+<div class="col-span-8 bg-surface-container-lowest rounded-[2rem] p-16 flex flex-col justify-between overflow-hidden relative">
+<div class="z-10">
+<h2 class="text-5xl font-headline font-bold text-primary max-w-lg leading-tight">The Alchemist's <br/>Standard of Purity</h2>
+<p class="text-on-surface-variant mt-8 text-lg max-w-md leading-relaxed">We don't just extract oils; we preserve spirits. Our alchemists follow seasonal cycles and moon phases to ensure every drop carries the maximum biological frequency of the plant.</p>
+<button class="mt-12 text-secondary font-bold text-lg flex items-center gap-2 hover:translate-x-2 transition-transform">
+                            Read Our Manifesto <span class="material-symbols-outlined">arrow_right_alt</span>
+</button>
+</div>
+<img alt="Alchemy Laboratory" class="absolute right-0 bottom-0 w-2/3 h-full object-cover mix-blend-multiply opacity-20" data-alt="Artistic photograph of glass alembics and traditional extraction equipment in a sunlit wooden studio, dust motes dancing in the light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrymSceF2Ny71t9Kcwe4ipMQlfCL1el2dKKQL7RCrdU_u2RfG4vVQDBmsb95mRDn50BwarLP9GM-sMnfQrYXg1-mxuBCf2t-pQOHMRWPSZY-0OQbVFnYjUKdGCKkLNugKmdF_nSwoknG_cfqU4smuY-OH_Q64cGYEWMCwOtfNAsPZZaAF4zDkyvR8uzcvWABMRoMPIrlTHZCOYHdWzxPEDjPyBPTnvzdNCFwwE00_YomnXmLEekcSoOy5XvvjEO7vwrVfOWcXx2Ndd"/>
+</div>
+<div class="col-span-4 flex flex-col gap-8">
+<div class="flex-1 bg-secondary-container rounded-[2rem] p-12 text-on-secondary-container flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-6xl mb-6" style="font-variation-settings: 'FILL' 1;">eco</span>
+<h3 class="text-2xl font-headline font-bold mb-4">100% Biodegradable</h3>
+<p class="opacity-80">Our packaging returns to the earth as gracefully as our oils.</p>
+</div>
+<div class="flex-1 bg-primary-container rounded-[2rem] p-12 text-on-primary-container flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-6xl mb-6" style="font-variation-settings: 'FILL' 1;">verified</span>
+<h3 class="text-2xl font-headline font-bold mb-4">Lab Verified</h3>
+<p class="opacity-80">Every batch is tested for terpene profiles and zero heavy metals.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-primary text-white py-24 px-12">
+<div class="max-w-[1920px] mx-auto grid grid-cols-12 gap-12">
+<div class="col-span-4">
+<h2 class="text-3xl font-headline font-bold tracking-tighter mb-8">Orva Oils</h2>
+<p class="opacity-70 max-w-xs leading-relaxed mb-12">Bringing the wisdom of the Himalayas and the purity of ancient extraction to your modern wellness ritual.</p>
+<div class="flex gap-6">
+<a class="hover:text-secondary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="hover:text-secondary transition-colors" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+<a class="hover:text-secondary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+</div>
+</div>
+<div class="col-span-2">
+<h4 class="font-bold mb-8 text-secondary uppercase tracking-widest text-xs">Curations</h4>
+<ul class="space-y-4 opacity-70">
+<li><a class="hover:opacity-100" href="#">Hair Rituals</a></li>
+<li><a class="hover:opacity-100" href="#">Skin Potions</a></li>
+<li><a class="hover:opacity-100" href="#">Sleep Support</a></li>
+<li><a class="hover:opacity-100" href="#">Digestion</a></li>
+</ul>
+</div>
+<div class="col-span-2">
+<h4 class="font-bold mb-8 text-secondary uppercase tracking-widest text-xs">Knowledge</h4>
+<ul class="space-y-4 opacity-70">
+<li><a class="hover:opacity-100" href="#">Oil Almanac</a></li>
+<li><a class="hover:opacity-100" href="#">Our Source</a></li>
+<li><a class="hover:opacity-100" href="#">Extraction Labs</a></li>
+<li><a class="hover:opacity-100" href="#">Press</a></li>
+</ul>
+</div>
+<div class="col-span-4">
+<h4 class="font-bold mb-8 text-secondary uppercase tracking-widest text-xs">The Alchemist’s Letter</h4>
+<p class="opacity-70 mb-6">Receive seasonal wellness protocols and first access to rare pressings.</p>
+<div class="flex gap-2">
+<input class="bg-white/10 border-none rounded-xl px-6 py-4 flex-1 focus:ring-2 focus:ring-secondary" placeholder="Your Email" type="email"/>
+<button class="bg-secondary px-8 rounded-xl font-bold hover:bg-secondary/80 transition-colors">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-[1920px] mx-auto mt-24 pt-12 border-t border-white/10 flex justify-between text-xs opacity-50">
+<p>© 2024 Orva Oils Apothecary. All Sacred Rights Reserved.</p>
+<div class="flex gap-8">
+<a href="#">Privacy Protocol</a>
+<a href="#">Terms of Service</a>
+<a href="#">Shipping &amp; Returns</a>
+</div>
+</div>
+</footer>
+</body></html>

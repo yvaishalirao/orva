@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Orva Admin | Inventory &amp; Orders</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e7e1df",
+                        "on-tertiary-fixed": "#281803",
+                        "primary-fixed": "#d6e3ff",
+                        "inverse-surface": "#32302e",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#737781",
+                        "surface": "#fef8f5",
+                        "on-surface": "#1d1b1a",
+                        "on-tertiary-fixed-variant": "#584329",
+                        "tertiary-fixed-dim": "#e0c29f",
+                        "on-primary-fixed-variant": "#0f4685",
+                        "on-primary-container": "#9abfff",
+                        "on-surface-variant": "#424750",
+                        "surface-container-high": "#ede7e4",
+                        "surface-container-highest": "#e7e1df",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffdbcd",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f5f0ed",
+                        "on-tertiary-container": "#d7b997",
+                        "tertiary-fixed": "#fdddb9",
+                        "surface-bright": "#fef8f5",
+                        "on-secondary-fixed-variant": "#7c2e00",
+                        "secondary-container": "#fc7127",
+                        "surface-tint": "#315f9f",
+                        "on-secondary-container": "#5c2000",
+                        "error-container": "#ffdad6",
+                        "on-background": "#1d1b1a",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#a8c8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#00366d",
+                        "background": "#fef8f5",
+                        "surface-container-low": "#f8f2f0",
+                        "secondary-fixed-dim": "#ffb595",
+                        "primary-container": "#1a4d8c",
+                        "tertiary": "#46331a",
+                        "outline-variant": "#c3c6d2",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-container": "#f2edea",
+                        "on-secondary-fixed": "#351000",
+                        "tertiary-container": "#5f492e",
+                        "surface-dim": "#ded9d6",
+                        "secondary": "#a23f00",
+                        "primary-fixed-dim": "#a8c8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .sidebar-active { font-variation-settings: 'FILL' 1; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e7e1df; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex min-h-screen">
+<!-- SideNavBar Anchor -->
+<aside class="h-screen w-72 fixed left-0 top-0 bg-[#ffffff] dark:bg-slate-950 shadow-xl shadow-blue-900/5 flex flex-col p-6 gap-8 z-50">
+<div class="flex items-center gap-3 px-2">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">oil_barrel</span>
+</div>
+<div>
+<h1 class="text-xl font-black text-[#1A4D8C] dark:text-blue-300 leading-none">Orva Admin</h1>
+<p class="text-[10px] font-['Manrope'] font-medium text-slate-500 uppercase tracking-widest mt-1">The Alchemist's Portal</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2 overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-xl hover:translate-x-1 transition-all duration-200 active:scale-[0.98] font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-[#1A4D8C] text-white rounded-xl shadow-lg shadow-blue-900/20 active:scale-[0.98] font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">oil_barrel</span>
+<span>Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-xl hover:translate-x-1 transition-all duration-200 active:scale-[0.98] font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span>Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-xl hover:translate-x-1 transition-all duration-200 active:scale-[0.98] font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-xl hover:translate-x-1 transition-all duration-200 active:scale-[0.98] font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span>Analytics</span>
+</a>
+<div class="pt-4 pb-2 px-4">
+<div class="h-px bg-surface-container"></div>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-xl hover:translate-x-1 transition-all duration-200 active:scale-[0.98] font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined">view_carousel</span>
+<span>Carousel</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-xl hover:translate-x-1 transition-all duration-200 active:scale-[0.98] font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined">percent</span>
+<span>Discounts</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-xl hover:translate-x-1 transition-all duration-200 active:scale-[0.98] font-['Manrope'] font-medium text-sm" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<div class="flex items-center gap-3 px-4 py-3 border-t border-surface-container mt-4 pt-4">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-xs">AA</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface">Arjun Alchemist</span>
+<span class="text-[10px] text-on-surface-variant">Admin Profile</span>
+</div>
+<span class="material-symbols-outlined ml-auto text-on-surface-variant text-sm">logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-72 flex-1 p-10 min-w-0">
+<!-- Header -->
+<header class="flex justify-between items-center mb-10">
+<div>
+<h2 class="text-3xl font-extrabold tracking-tight text-primary">Master Inventory &amp; Orders</h2>
+<p class="text-on-surface-variant mt-1">Managing the soul of Orva Oils' supply chain.</p>
+</div>
+<div class="flex gap-4">
+<button class="bg-surface-container-highest text-primary px-6 py-2.5 rounded-xl font-semibold text-sm transition-transform active:scale-95">
+                    Export CSV
+                </button>
+<button class="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 transition-transform active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                    Add New Batch
+                </button>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Order Management Table Section -->
+<section class="col-span-12 lg:col-span-8 bg-surface-container-lowest rounded-3xl p-8 shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-bold text-on-surface">Order Management</h3>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-xs font-medium text-on-surface-variant">Recent 50 Orders</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-surface-container-low text-on-surface-variant text-xs uppercase tracking-widest font-bold">
+<th class="pb-4 font-bold">ID</th>
+<th class="pb-4 font-bold">Customer Name</th>
+<th class="pb-4 font-bold">Items</th>
+<th class="pb-4 font-bold">Amount</th>
+<th class="pb-4 font-bold">Status</th>
+<th class="pb-4 font-bold">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<tr class="group hover:bg-surface-container-low/50 transition-colors">
+<td class="py-4 font-mono text-sm text-primary">#ORV-9821</td>
+<td class="py-4">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Meera Iyer</span>
+<span class="text-xs text-on-surface-variant">meera.iyer@example.com</span>
+</div>
+</td>
+<td class="py-4 text-sm">2x Sandalwood, 1x Rose</td>
+<td class="py-4 font-bold text-on-surface">₹4,250</td>
+<td class="py-4">
+<select class="bg-secondary-container/10 text-on-secondary-container text-xs font-bold rounded-lg border-none focus:ring-2 focus:ring-secondary py-1 pl-2 pr-8 cursor-pointer appearance-none">
+<option selected="">Processing</option>
+<option>Shipped</option>
+<option>Delivered</option>
+<option>Cancelled</option>
+</select>
+</td>
+<td class="py-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="group hover:bg-surface-container-low/50 transition-colors">
+<td class="py-4 font-mono text-sm text-primary">#ORV-9820</td>
+<td class="py-4">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Rahul Sharma</span>
+<span class="text-xs text-on-surface-variant">rahul.s@domain.in</span>
+</div>
+</td>
+<td class="py-4 text-sm">1x Cold-Pressed Neem</td>
+<td class="py-4 font-bold text-on-surface">₹890</td>
+<td class="py-4">
+<select class="bg-green-100 text-green-800 text-xs font-bold rounded-lg border-none focus:ring-2 focus:ring-green-500 py-1 pl-2 pr-8 cursor-pointer appearance-none">
+<option>Processing</option>
+<option selected="">Shipped</option>
+<option>Delivered</option>
+<option>Cancelled</option>
+</select>
+</td>
+<td class="py-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="group hover:bg-surface-container-low/50 transition-colors">
+<td class="py-4 font-mono text-sm text-primary">#ORV-9819</td>
+<td class="py-4">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Ananya Das</span>
+<span class="text-xs text-on-surface-variant">ananya.das@webmail.com</span>
+</div>
+</td>
+<td class="py-4 text-sm">3x Peppermint Bliss</td>
+<td class="py-4 font-bold text-on-surface">₹3,100</td>
+<td class="py-4">
+<select class="bg-surface-container-highest text-on-surface-variant text-xs font-bold rounded-lg border-none focus:ring-2 focus:ring-primary py-1 pl-2 pr-8 cursor-pointer appearance-none">
+<option>Processing</option>
+<option>Shipped</option>
+<option selected="">Delivered</option>
+<option>Cancelled</option>
+</select>
+</td>
+<td class="py-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-6 flex justify-center">
+<button class="text-primary font-bold text-sm hover:underline">View All Active Orders</button>
+</div>
+</section>
+<!-- Product Inventory Card -->
+<section class="col-span-12 lg:col-span-4 space-y-6">
+<div class="bg-surface-container-lowest rounded-3xl p-6 shadow-sm">
+<h3 class="text-xl font-bold text-on-surface mb-4">Stock Highlights</h3>
+<div class="space-y-4">
+<div class="flex items-center gap-4 bg-surface-container-low p-3 rounded-2xl">
+<div class="w-12 h-12 bg-white rounded-xl overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="amber glass dropper bottle with gold cap containing orange essential oil against a soft beige background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkzZxzA9LudQFH63oxZGe47K36RNanAKyUoM_Bd38BmNVnWW-5KAq4UvqxTZQl85vbcHUNC-eMWOxDqFtmNIsRIzp7xtF6yn1If9QeHSrT2bkcOENfZsHwdZkaf4gTFHfa24V-KkJ3ya2MPilTDGig-zYVq_i12dTje9ORWQ1Hxfovw7wPF8HAm0UgvdkiGRQOW8nAzE59Govq9Lti0XlHPERt2YpWQQDbdjT9cTs41-xAMo_hFerR0IoXY2FrvJVFPapdchd2vouI"/>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface">Wild Turmeric Oil</p>
+<div class="flex justify-between items-center mt-1">
+<span class="text-xs text-error font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">warning</span> Low Stock: 12 left
+                                    </span>
+<input class="w-16 bg-white border-none rounded-md text-[10px] font-bold p-1 text-right focus:ring-1 focus:ring-primary" type="text" value="₹1,250"/>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-low p-3 rounded-2xl">
+<div class="w-12 h-12 bg-white rounded-xl overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="clear glass bottle of botanical hair oil with lavender sprigs blurred in the background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-fDUhcmZjFd0YBWQjBrEjxAeXhyHDJyohCLfUn_C9lRkSiSIhG-kTZfDEqCmt_6cFjMH0x826B3CcdhSlyDyA2diK7Fzj-PLN_22rImxwVd3foXSVdefFywh8F3It8esJ-6gWKuqAAhjG5qnZkfOkdGgdKdP8Q9T3HM_oRgcslBPhGZZADWkc3Dsujup6_t_SE_SLdry2AQcdBIuhtsDqgzAjhtX2tMK5bXTiEqFd_UBegJD2ItiaQMx9xx9QB3h4IxQTt4jiPm3N"/>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-on-surface">Lavender Mist</p>
+<div class="flex justify-between items-center mt-1">
+<span class="text-xs text-on-surface-variant font-medium">Stock: 450 units</span>
+<input class="w-16 bg-white border-none rounded-md text-[10px] font-bold p-1 text-right focus:ring-1 focus:ring-primary" type="text" value="₹750"/>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-3 rounded-xl border-2 border-primary text-primary font-bold text-sm hover:bg-primary hover:text-white transition-all">
+                        Update All Prices
+                    </button>
+</div>
+<!-- Sales Snapshot -->
+<div class="bg-gradient-to-br from-[#1A4D8C] to-[#00366d] rounded-3xl p-6 text-white shadow-xl shadow-blue-900/10">
+<p class="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">Today's Revenue</p>
+<h4 class="text-3xl font-black mb-4">₹84,200.00</h4>
+<div class="h-16 w-full flex items-end gap-1 mb-4">
+<div class="bg-white/20 w-full h-2/5 rounded-t-sm"></div>
+<div class="bg-white/20 w-full h-3/5 rounded-t-sm"></div>
+<div class="bg-white/40 w-full h-4/5 rounded-t-sm"></div>
+<div class="bg-white/20 w-full h-2/5 rounded-t-sm"></div>
+<div class="bg-white/60 w-full h-full rounded-t-sm"></div>
+<div class="bg-white/20 w-full h-1/5 rounded-t-sm"></div>
+<div class="bg-white/30 w-full h-3/5 rounded-t-sm"></div>
+</div>
+<div class="flex justify-between items-center text-[10px] font-bold">
+<span>Yesterday: ₹76k</span>
+<span class="text-green-300 flex items-center">+12% ↑</span>
+</div>
+</div>
+</section>
+<!-- Carousel Management Section -->
+<section class="col-span-12 bg-surface-container-lowest rounded-3xl p-8 shadow-sm">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h3 class="text-xl font-bold text-on-surface">Marketing Carousel</h3>
+<p class="text-on-surface-variant text-sm mt-1">Manage the high-impact visual slots on your homepage.</p>
+</div>
+<button class="bg-secondary text-on-secondary px-6 py-2.5 rounded-xl font-semibold text-sm shadow-lg shadow-secondary/20 active:scale-95">
+                        Publish Changes
+                    </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<!-- Slot 1 -->
+<div class="relative aspect-video bg-surface-container rounded-2xl overflow-hidden group">
+<img class="w-full h-full object-cover" data-alt="professional editorial photograph of luxury facial oil being poured into a marble bowl with soft directional sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSfYUXxCSsfiv8QtaD53mEMKDcN3kh5xYl5c402TXoRJAQJ4PLs3ypniYLsPEWg63KUQ2egBPGPLg0GoTKC4VzNVEkd0pNxp0_Vr_B1DRXjViCYkt4LBPA1dyiLLDWuXNld-CW5ggB2AGsmB6aLLnpBQSwqeSwWELKL-KfwFBF-VUEnCCMB7NIXfzQOj1OHJt4acQLwQ2bS1TN_IxbebP3c2QBwYRQc5CBhwbDQV0mChwXV-ZWFNixfATmYenRUzlgzaI-SE0OQSJu"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3">
+<button class="bg-white text-on-surface px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">cloud_upload</span>
+                                Replace
+                            </button>
+<span class="text-white text-[10px] font-medium">Slot 1: Hero Main</span>
+</div>
+<div class="absolute top-3 left-3 bg-secondary-container text-on-secondary-container px-2 py-1 rounded-md text-[9px] font-black uppercase">Active</div>
+</div>
+<!-- Slot 2 -->
+<div class="relative aspect-video bg-surface-container rounded-2xl overflow-hidden group">
+<img class="w-full h-full object-cover" data-alt="close-up of fresh green mint leaves and citrus slices arranged artistically on a warm clay surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJMD3PbfhcZToBGtVtUHNU8AvG-3vec8XeTzLUf4EhCvZ13jF597h1qAiy4b7tuAFM0HkepJdrd20_QIikXqeCJjQ8J3vX-Y6u9KXFoju_4Ac9z-_BfOC4xUXIDGa4dfrhghlaGBbL347g4e35ja9NavYLKrDZ0OM5-bCy1N0kXMELLX7WPBbfgWGPjTbnRBuSezN_M8tw4lOnANBETTZ5gQwQCZKLfeM20N_NtonanDsgID51bRbj_Neqn4zYMdJH2llcs9OBZUQu"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3">
+<button class="bg-white text-on-surface px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">cloud_upload</span>
+                                Replace
+                            </button>
+<span class="text-white text-[10px] font-medium">Slot 2: Wellness Rituals</span>
+</div>
+<div class="absolute top-3 left-3 bg-secondary-container text-on-secondary-container px-2 py-1 rounded-md text-[9px] font-black uppercase">Active</div>
+</div>
+<!-- Slot 3 (Empty/Upload) -->
+<div class="aspect-video bg-surface-container-low border-2 border-dashed border-outline-variant rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">add_a_photo</span>
+</div>
+<p class="text-xs font-bold text-on-surface-variant">Slot 3: Upload Image</p>
+</div>
+<!-- Slot 4 (Empty/Upload) -->
+<div class="aspect-video bg-surface-container-low border-2 border-dashed border-outline-variant rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">add_a_photo</span>
+</div>
+<p class="text-xs font-bold text-on-surface-variant">Slot 4: Upload Image</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

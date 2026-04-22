@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Order Status | Orva Oils</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e7e1df",
+                        "on-tertiary-fixed": "#281803",
+                        "primary-fixed": "#d6e3ff",
+                        "inverse-surface": "#32302e",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#737781",
+                        "surface": "#fef8f5",
+                        "on-surface": "#1d1b1a",
+                        "on-tertiary-fixed-variant": "#584329",
+                        "tertiary-fixed-dim": "#e0c29f",
+                        "on-primary-fixed-variant": "#0f4685",
+                        "on-primary-container": "#9abfff",
+                        "on-surface-variant": "#424750",
+                        "surface-container-high": "#ede7e4",
+                        "surface-container-highest": "#e7e1df",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffdbcd",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f5f0ed",
+                        "on-tertiary-container": "#d7b997",
+                        "tertiary-fixed": "#fdddb9",
+                        "surface-bright": "#fef8f5",
+                        "on-secondary-fixed-variant": "#7c2e00",
+                        "secondary-container": "#fc7127",
+                        "surface-tint": "#315f9f",
+                        "on-secondary-container": "#5c2000",
+                        "error-container": "#ffdad6",
+                        "on-background": "#1d1b1a",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#a8c8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#00366d",
+                        "background": "#fef8f5",
+                        "surface-container-low": "#f8f2f0",
+                        "secondary-fixed-dim": "#ffb595",
+                        "primary-container": "#1a4d8c",
+                        "tertiary": "#46331a",
+                        "outline-variant": "#c3c6d2",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-container": "#f2edea",
+                        "on-secondary-fixed": "#351000",
+                        "tertiary-container": "#5f492e",
+                        "surface-dim": "#ded9d6",
+                        "secondary": "#a23f00",
+                        "primary-fixed-dim": "#a8c8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .brand-font { font-family: 'Manrope', sans-serif; }
+        .glass-header { background: rgba(254, 248, 245, 0.8); backdrop-filter: blur(20px); }
+        .primary-gradient { background: linear-gradient(135deg, #00366d 0%, #1a4d8c 100%); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopNavBar Component -->
+<header class="fixed top-0 w-full z-50 bg-[#fef8f5]/80 backdrop-blur-xl shadow-sm">
+<nav class="flex justify-between items-center w-full px-12 py-6 max-w-[1920px] mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-[#1A4D8C]">Orva Oils</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-['Manrope'] tracking-tight font-semibold uppercase text-xs text-[#1d1b1a] opacity-70 hover:text-[#1A4D8C] hover:opacity-100 transition-all duration-300" href="#">Shop All</a>
+<a class="font-['Manrope'] tracking-tight font-semibold uppercase text-xs text-[#1d1b1a] opacity-70 hover:text-[#1A4D8C] hover:opacity-100 transition-all duration-300" href="#">Wellness Rituals</a>
+<a class="font-['Manrope'] tracking-tight font-semibold uppercase text-xs text-[#1d1b1a] opacity-70 hover:text-[#1A4D8C] hover:opacity-100 transition-all duration-300" href="#">The Alchemist</a>
+<a class="font-['Manrope'] tracking-tight font-semibold uppercase text-xs text-[#1d1b1a] opacity-70 hover:text-[#1A4D8C] hover:opacity-100 transition-all duration-300" href="#">Pure Organic</a>
+<a class="font-['Manrope'] tracking-tight font-semibold uppercase text-xs text-[#1d1b1a] opacity-70 hover:text-[#1A4D8C] hover:opacity-100 transition-all duration-300" href="#">Sustainability</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="scale-95 active:scale-90 transition-transform text-[#1A4D8C]">
+<span class="material-symbols-outlined" data-icon="shopping_basket">shopping_basket</span>
+</button>
+<button class="scale-95 active:scale-90 transition-transform text-[#1A4D8C]">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</nav>
+</header>
+<main class="pt-32 pb-24 px-6 md:px-12 max-w-6xl mx-auto">
+<!-- Order Identification & Quick Stats -->
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div class="max-w-xl">
+<span class="text-secondary font-bold tracking-widest text-xs uppercase mb-3 block">Wellness on the way</span>
+<h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter text-primary mb-4 leading-none">Order #ORV-882910</h1>
+<p class="text-on-surface-variant font-medium">Estimated arrival: Wednesday, 24th October</p>
+</div>
+<div class="flex gap-4">
+<a class="flex items-center gap-2 px-6 py-3 bg-surface-container-highest rounded-xl text-primary font-semibold text-sm transition-all hover:bg-surface-container-high" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                    Download GST Invoice
+                </a>
+</div>
+</div>
+<!-- Tracking Module -->
+<section class="bg-surface-container-lowest rounded-[2rem] p-8 md:p-12 mb-12 shadow-sm border border-surface-container">
+<div class="relative w-full py-8">
+<!-- Progress Line Background -->
+<div class="absolute top-1/2 left-0 w-full h-1 bg-surface-container-high -translate-y-1/2 rounded-full"></div>
+<!-- Active Progress Line -->
+<div class="absolute top-1/2 left-0 w-2/3 h-1 primary-gradient -translate-y-1/2 rounded-full"></div>
+<div class="relative flex justify-between">
+<!-- Step 1 -->
+<div class="flex flex-col items-center text-center">
+<div class="w-10 h-10 rounded-full primary-gradient flex items-center justify-center text-white shadow-lg shadow-primary/20 z-10 mb-4">
+<span class="material-symbols-outlined text-lg" data-icon="check">check</span>
+</div>
+<span class="font-bold text-xs uppercase tracking-wider text-primary">Order Placed</span>
+<span class="text-[10px] text-on-surface-variant mt-1">Oct 18, 10:24 AM</span>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center text-center">
+<div class="w-10 h-10 rounded-full primary-gradient flex items-center justify-center text-white shadow-lg shadow-primary/20 z-10 mb-4">
+<span class="material-symbols-outlined text-lg" data-icon="check">check</span>
+</div>
+<span class="font-bold text-xs uppercase tracking-wider text-primary">Confirmed</span>
+<span class="text-[10px] text-on-surface-variant mt-1">Oct 18, 11:45 AM</span>
+</div>
+<!-- Step 3 (Active) -->
+<div class="flex flex-col items-center text-center">
+<div class="w-12 h-12 rounded-full bg-white border-4 border-secondary flex items-center justify-center text-secondary shadow-xl z-10 mb-4 -mt-1 scale-110">
+<span class="material-symbols-outlined text-xl" data-icon="local_shipping" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+</div>
+<span class="font-bold text-xs uppercase tracking-wider text-secondary">Out for Delivery</span>
+<span class="text-[10px] text-on-surface-variant mt-1">Today, 08:30 AM</span>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-col items-center text-center opacity-40">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant z-10 mb-4">
+<span class="material-symbols-outlined text-lg" data-icon="inventory_2">inventory_2</span>
+</div>
+<span class="font-bold text-xs uppercase tracking-wider text-on-surface-variant">Delivered</span>
+<span class="text-[10px] text-on-surface-variant mt-1">Pending</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Details Grid (Asymmetric Layout) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left: Order Items (Bento Style) -->
+<div class="lg:col-span-7 space-y-6">
+<h3 class="text-xl font-bold tracking-tight text-primary px-2">Your Selection</h3>
+<!-- Item Card 1 -->
+<div class="flex items-center gap-6 bg-surface-container-lowest p-6 rounded-3xl border border-surface-container transition-all hover:translate-x-1">
+<div class="w-24 h-24 rounded-2xl bg-surface-container overflow-hidden flex-shrink-0">
+<img alt="Luxury gold oil bottle" class="w-full h-full object-cover" data-alt="Premium golden glass oil bottle with minimalist label on a warm marble surface with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo0pJ2pPAFhpOPaPWSMrkL5mRd7TQS5gj7r9swm7PRc8ELBQGvIZ4TstsJgsJgPa-x2aIvrSUfmdcuwh6NSWlxDZEQ2ewyEF4COGeRL-AHymDhRHBs-y_SNfJ_8NG0DW3CW9BCgRqD2xV8e2tebi8ZOQNHLE1d7_zroBGQ3XJJLjVKX2j9rN9bxs42vcrfFAmCZi4jG7rETdo9e6f_zQQXAeaDw6FPOZLkTGrmPnxfPE3NwX5xTVmIPrG5BlcrvZa26o57Ps0u9uGq"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-bold text-lg text-on-surface leading-tight">Saffron Infused Glow Elixir</h4>
+<span class="font-bold text-primary">₹2,450</span>
+</div>
+<p class="text-xs text-on-surface-variant mb-3">50ml • Pure Organic Extract</p>
+<div class="inline-flex px-3 py-1 bg-secondary-container/10 text-secondary text-[10px] font-bold uppercase tracking-widest rounded-full">
+                            Best Seller
+                        </div>
+</div>
+</div>
+<!-- Item Card 2 -->
+<div class="flex items-center gap-6 bg-surface-container-lowest p-6 rounded-3xl border border-surface-container transition-all hover:translate-x-1">
+<div class="w-24 h-24 rounded-2xl bg-surface-container overflow-hidden flex-shrink-0">
+<img alt="Green herbal oil" class="w-full h-full object-cover" data-alt="Dark green glass bottle of herbal essential oil surrounded by fresh eucalyptus leaves and morning sunlight beams" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKs1odBOJcbgCQJOE1RAqk6wvYkRoo2SPqcBhqIBfw09CDzM9f98zic7yN0Z2jkM4ge6lKPspFMNuvV60I2IBZzpNaLR2ZbWmwQzR8_3VMYyRFTKVB8bzGMkE3RwdmZaMZYTVbM29IbH5ldG2wkTkFu4eiauLzK3XIN0KqSQ4QSEnLyf28G74AbmhCXBwKmqzHyeVjqcsGoiiozF9kuEkgab7v1FXrhsA4sNWQlYmwgrKwu4alV1zdgyKwpDC1dG5d7JE5wvFnG11i"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-bold text-lg text-on-surface leading-tight">Vetiver &amp; Neroli Scalp Serum</h4>
+<span class="font-bold text-primary">₹1,850</span>
+</div>
+<p class="text-xs text-on-surface-variant mb-3">100ml • Cold Pressed</p>
+<div class="inline-flex px-3 py-1 bg-surface-container text-on-surface-variant text-[10px] font-bold uppercase tracking-widest rounded-full">
+                            Eco-Pack
+                        </div>
+</div>
+</div>
+</div>
+<!-- Right: Address & Pricing -->
+<div class="lg:col-span-5 space-y-8">
+<!-- Delivery Address -->
+<div class="bg-primary text-white p-8 rounded-[2rem] shadow-xl relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-12 translate-x-12 blur-3xl"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-secondary" data-icon="location_on">location_on</span>
+<span class="text-xs font-bold uppercase tracking-widest text-primary-fixed">Delivery Destination</span>
+</div>
+<h4 class="font-bold text-xl mb-2">Arjun Malhotra</h4>
+<p class="text-primary-fixed leading-relaxed opacity-90 text-sm">
+                            Apartment 4B, Skyview Residency,<br/>
+                            Richmond Road, Bengaluru,<br/>
+                            Karnataka 560025
+                        </p>
+<div class="mt-6 pt-6 border-t border-white/10 flex items-center gap-4">
+<span class="material-symbols-outlined opacity-60" data-icon="phone">phone</span>
+<span class="text-sm font-medium">+91 98765 43210</span>
+</div>
+</div>
+</div>
+<!-- Price Breakdown -->
+<div class="bg-surface-container-low p-8 rounded-[2rem]">
+<h3 class="text-sm font-bold uppercase tracking-widest text-primary mb-6">Pricing Summary</h3>
+<div class="space-y-4 mb-6">
+<div class="flex justify-between text-sm font-medium text-on-surface-variant">
+<span>Subtotal</span>
+<span>₹4,300.00</span>
+</div>
+<div class="flex justify-between text-sm font-medium text-on-surface-variant">
+<span>Eco-friendly Shipping</span>
+<span class="text-secondary font-bold">FREE</span>
+</div>
+<div class="flex justify-between text-sm font-medium text-on-surface-variant">
+<span>GST (18%)</span>
+<span>₹774.00</span>
+</div>
+</div>
+<div class="pt-6 border-t border-surface-container-highest flex justify-between items-end">
+<div>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider block">Total Amount</span>
+<span class="text-3xl font-extrabold text-primary tracking-tighter">₹5,074.00</span>
+</div>
+<div class="text-right">
+<span class="text-[10px] text-on-surface-variant uppercase block">Paid via</span>
+<span class="text-sm font-bold text-primary">UPI / GPay</span>
+</div>
+</div>
+</div>
+<!-- Help Link -->
+<div class="text-center">
+<p class="text-sm text-on-surface-variant">
+                        Need assistance? <a class="text-secondary font-bold underline underline-offset-4 decoration-secondary/30 hover:decoration-secondary" href="#">Connect with an Alchemist</a>
+</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Identity -->
+<footer class="bg-surface-container-low py-12 px-6 border-t border-surface-container-high">
+<div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="text-xl font-bold tracking-tighter text-[#1A4D8C] opacity-40">Orva Oils</div>
+<div class="flex gap-8 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Returns &amp; Rituals</a>
+<a class="hover:text-primary transition-colors" href="#">Contact Us</a>
+</div>
+<p class="text-[10px] font-medium text-on-surface-variant opacity-60">© 2024 Orva Oils India Pvt Ltd.</p>
+</div>
+</footer>
+</body></html>
