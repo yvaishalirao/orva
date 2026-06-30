@@ -2,7 +2,13 @@
 DESIGN.MD
 screens/
 orva_assets/
+orva_colour_pallete.html
 docs/
+orva/
+orva-oils/
+
+# Claude
+.claude/
 
 # Environment variables
 .env
