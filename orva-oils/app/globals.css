@@ -1,26 +1,69 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Fonts */
+  --font-sans: var(--font-inter);
+  --font-headline: var(--font-manrope);
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Primary – deep navy */
+  --color-primary: #00366d;
+  --color-primary-container: #1a4d8c;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #9abfff;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Secondary – burnt orange */
+  --color-secondary: #a23f00;
+  --color-secondary-container: #fc7127;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #5c2000;
+
+  /* Tertiary */
+  --color-tertiary: #46331a;
+  --color-tertiary-container: #5f492e;
+  --color-on-tertiary-container: #d7b997;
+
+  /* Surfaces */
+  --color-background: #fef8f5;
+  --color-surface: #fef8f5;
+  --color-surface-bright: #fef8f5;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f8f2f0;
+  --color-surface-container: #f2edea;
+  --color-surface-container-high: #ede7e4;
+  --color-surface-container-highest: #e7e1df;
+  --color-surface-variant: #e7e1df;
+
+  /* Text */
+  --color-on-surface: #1d1b1a;
+  --color-on-surface-variant: #424750;
+  --color-on-background: #1d1b1a;
+
+  /* Borders */
+  --color-outline: #737781;
+  --color-outline-variant: #c3c6d2;
+
+  /* Error */
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #fef8f5;
+  color: #1d1b1a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Gradient button helper */
+.btn-primary {
+  background: linear-gradient(135deg, #00366d 0%, #1a4d8c 100%);
+  color: #ffffff;
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.btn-primary:hover {
+  box-shadow: 0 8px 24px rgba(0, 54, 109, 0.25);
+}
+.btn-primary:active {
+  transform: scale(0.97);
 }
