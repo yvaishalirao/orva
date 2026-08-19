@@ -1,10 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/store/cart';
-
-const GST_RATE = 0.05;
 
 interface Address {
   name: string;
@@ -20,6 +18,12 @@ const EMPTY_ADDRESS: Address = {
   name: '', phone: '', line1: '', line2: '', city: '', state: '', pincode: '',
 };
 
+interface AppliedDiscount {
+  code: string;
+  discountAmount: number;
+  total: number;
+}
+
 declare global {
   interface Window {
     Razorpay: new (options: Record<string, unknown>) => {
@@ -33,25 +37,15 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { items, clearCart } = useCart();
   const [address, setAddress] = useState<Address>(EMPTY_ADDRESS);
+  const [discountCode, setDiscountCode] = useState('');
+  const [discount, setDiscount] = useState<AppliedDiscount | null>(null);
+  const [discountError, setDiscountError] = useState('');
+  const [applyingDiscount, setApplyingDiscount] = useState(false);
   const [paying, setPaying] = useState(false);
   const [error, setError] = useState('');
-  const [scriptReady, setScriptReady] = useState(false);
 
-  // Load Razorpay checkout.js once
-  useEffect(() => {
-    if (document.getElementById('razorpay-script')) { setScriptReady(true); return; }
-    const script = document.createElement('script');
-    script.id = 'razorpay-script';
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.onload = () => setScriptReady(true);
-    script.onerror = () => setError('Failed to load payment script. Check your internet connection.');
-    document.body.appendChild(script);
-  }, []);
-
-  // Cart totals
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
-  const gst = Math.round(subtotal * GST_RATE * 100) / 100;
-  const total = subtotal + gst;
+  const total = discount?.total ?? subtotal;
 
   const fmt = (n: number) =>
     new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(n);
@@ -61,9 +55,36 @@ export default function CheckoutPage() {
       setAddress((a) => ({ ...a, [field]: e.target.value }));
   }
 
+  async function handleApplyDiscount() {
+    setDiscountError('');
+    if (!discountCode.trim()) return;
+    setApplyingDiscount(true);
+    try {
+      const res = await fetch('/api/discount', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: discountCode, subtotal }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setDiscount(null);
+        setDiscountError(data.error ?? 'Could not apply discount code.');
+        return;
+      }
+      setDiscount(data);
+    } catch {
+      setDiscountError('Could not apply discount code.');
+    } finally {
+      setApplyingDiscount(false);
+    }
+  }
+
   async function handlePay() {
     setError('');
-    if (!scriptReady) { setError('Payment script not ready yet.'); return; }
+    if (typeof window === 'undefined' || !window.Razorpay) {
+      setError('Payment script not ready yet.');
+      return;
+    }
     if (!items.length) { setError('Your cart is empty.'); return; }
 
     const missing = (['name', 'phone', 'line1', 'city', 'state', 'pincode'] as const).find(
@@ -74,53 +95,50 @@ export default function CheckoutPage() {
     setPaying(true);
     try {
       // Step 1 — create order on server (prices from DB, never from client)
-      const orderRes = await fetch('/api/create-order', {
+      const orderRes = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          items: items.map(({ id, quantity }) => ({ product_id: id, quantity })),
-          address,
+          items: items.map(({ id, quantity }) => ({ productId: id, quantity })),
+          address: { ...address, line2: address.line2.trim() || undefined },
+          discountCode: discount?.code,
         }),
       });
       const orderData = await orderRes.json();
       if (!orderRes.ok) { setError(orderData.error ?? 'Could not create order.'); setPaying(false); return; }
 
-      const { razorpay_order_id, amount, currency, db_order_id } = orderData;
+      const { orderId } = orderData as { orderId: string; total: number };
 
-      // Step 2 — open Razorpay modal
+      // Step 2 — create Razorpay order via server (amount sourced from DB order total)
+      const initRes = await fetch('/api/payments/init', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId }),
+      });
+      const initData = await initRes.json();
+      if (!initRes.ok) { setError(initData.error ?? 'Could not start payment.'); setPaying(false); return; }
+
+      const { razorpayOrderId, keyId } = initData as { razorpayOrderId: string; keyId: string };
+
+      // Step 3 — open Razorpay modal
       const rzp = new window.Razorpay({
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount,
-        currency,
-        order_id: razorpay_order_id,
+        key: keyId,
+        order_id: razorpayOrderId,
         name: 'Orva Oils',
-        description: 'Cold-pressed oils — pure & natural',
-        theme: { color: '#00366d' },
+        description: 'Oil order',
+        prefill: { contact: address.phone },
+        theme: { color: '#2A7F7F' },
         modal: {
           ondismiss() {
             setError('Payment cancelled.');
             setPaying(false);
           },
         },
-        handler: async (response: {
-          razorpay_payment_id: string;
-          razorpay_order_id: string;
-          razorpay_signature: string;
-        }) => {
-          // Step 3 — verify signature on server
-          const verifyRes = await fetch('/api/verify-payment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...response, db_order_id }),
-          });
-          const verifyData = await verifyRes.json();
-          if (!verifyRes.ok) {
-            setError(verifyData.error ?? 'Payment verification failed.');
-            setPaying(false);
-            return;
-          }
+        // Order is marked paid server-side by the Razorpay webhook (INV-01) —
+        // this handler only redirects once the modal reports success.
+        handler: () => {
           clearCart();
-          router.push(`/orders/${db_order_id}`);
+          router.push(`/orders/${orderId}`);
         },
       });
 
@@ -227,19 +245,48 @@ export default function CheckoutPage() {
               ))}
             </div>
 
+            {/* Discount code */}
+            <div className="mb-7">
+              <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5">
+                Discount Code
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={discountCode}
+                  onChange={(e) => { setDiscountCode(e.target.value); setDiscount(null); }}
+                  placeholder="e.g. WELCOME10"
+                  className="flex-1 bg-surface-container-low border-none rounded-xl px-4 py-3 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-on-surface-variant/40"
+                />
+                <button
+                  type="button"
+                  onClick={handleApplyDiscount}
+                  disabled={applyingDiscount || !discountCode.trim()}
+                  className="px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wide bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors disabled:opacity-50"
+                >
+                  {applyingDiscount ? '...' : 'Apply'}
+                </button>
+              </div>
+              {discountError && <p className="text-error text-xs mt-2">{discountError}</p>}
+              {discount && (
+                <p className="text-xs mt-2 text-[#1a6b3c] font-semibold">
+                  “{discount.code}” applied — {fmt(discount.discountAmount)} off
+                </p>
+              )}
+            </div>
+
             {/* Totals */}
             <div className="space-y-3 border-t border-surface-container pt-5 mb-7">
               <div className="flex justify-between text-sm text-on-surface-variant">
                 <span>Subtotal</span>
                 <span className="font-medium text-on-surface">{fmt(subtotal)}</span>
               </div>
-              <div className="flex justify-between text-sm text-on-surface-variant">
-                <div>
-                  <span>GST (5%)</span>
-                  <p className="text-[10px]">CGST 2.5% + SGST 2.5%</p>
+              {discount && (
+                <div className="flex justify-between text-sm text-on-surface-variant">
+                  <span>Discount</span>
+                  <span className="font-medium text-[#1a6b3c]">−{fmt(discount.discountAmount)}</span>
                 </div>
-                <span className="font-medium text-on-surface">{fmt(gst)}</span>
-              </div>
+              )}
               <div className="flex justify-between items-end pt-3 border-t border-surface-container-highest">
                 <span className="font-headline font-bold text-primary">Total Payable</span>
                 <span className="font-headline text-3xl font-extrabold text-primary">{fmt(total)}</span>
@@ -254,7 +301,7 @@ export default function CheckoutPage() {
 
             <button
               onClick={handlePay}
-              disabled={paying || !scriptReady}
+              disabled={paying}
               className="btn-primary w-full py-4 rounded-xl font-bold text-base flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-primary/15"
             >
               {paying ? (
@@ -267,7 +314,7 @@ export default function CheckoutPage() {
                 </>
               ) : (
                 <>
-                  Pay via Razorpay
+                  Place Order
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
                     <path d="M3 8h10M9 4l4 4-4 4" />
                   </svg>
