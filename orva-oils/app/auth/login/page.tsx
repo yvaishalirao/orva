@@ -1,9 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
-export default function AdminLoginPage() {
+function LoginForm() {
+  const searchParams = useSearchParams();
+  const next = searchParams.get('next') ?? '/';
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -14,7 +17,7 @@ export default function AdminLoginPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/api/auth/callback?next=/admin/orders`,
+        redirectTo: `${window.location.origin}/api/auth/callback?next=${encodeURIComponent(next)}`,
       },
     });
     if (error) {
@@ -26,10 +29,10 @@ export default function AdminLoginPage() {
   return (
     <main className="max-w-md mx-auto px-8 py-24 text-center">
       <h1 className="font-headline text-3xl font-extrabold tracking-tight text-primary mb-3">
-        Admin Login
+        Sign in to continue
       </h1>
       <p className="text-on-surface-variant text-sm mb-10">
-        Sign in with the Orva Oils admin Google account.
+        Sign in with Google to checkout and track your orders.
       </p>
 
       {error && (
@@ -44,5 +47,13 @@ export default function AdminLoginPage() {
         {loading ? 'Redirecting…' : 'Continue with Google'}
       </button>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }
