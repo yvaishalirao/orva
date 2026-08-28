@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
+import { requireAdmin } from '@/lib/auth/adminGuard';
+import { createAdminClient } from '@/lib/supabase/admin';
 import type { NextRequest } from 'next/server';
 
 export async function GET(_req: NextRequest, ctx: RouteContext<'/api/products/[id]'>) {
@@ -12,5 +14,30 @@ export async function GET(_req: NextRequest, ctx: RouteContext<'/api/products/[i
     .single();
 
   if (error || !data) return Response.json({ error: 'Product not found' }, { status: 404 });
+  return Response.json(data);
+}
+
+export async function PATCH(request: NextRequest, ctx: RouteContext<'/api/products/[id]'>) {
+  const guard = await requireAdmin();
+  if (!guard.ok) return guard.response;
+
+  const { id } = await ctx.params;
+  const body = await request.json() as Partial<{
+    name: string; description: string; price: number; image_url: string; active: boolean;
+  }>;
+
+  if (body.price !== undefined && (typeof body.price !== 'number' || body.price < 0)) {
+    return Response.json({ error: 'price must be a non-negative number' }, { status: 400 });
+  }
+
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from('products')
+    .update(body)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error || !data) return Response.json({ error: 'Failed to update product' }, { status: 500 });
   return Response.json(data);
 }
