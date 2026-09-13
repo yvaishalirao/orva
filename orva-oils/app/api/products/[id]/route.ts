@@ -41,3 +41,25 @@ export async function PATCH(request: NextRequest, ctx: RouteContext<'/api/produc
   if (error || !data) return Response.json({ error: 'Failed to update product' }, { status: 500 });
   return Response.json(data);
 }
+
+export async function DELETE(_req: NextRequest, ctx: RouteContext<'/api/products/[id]'>) {
+  const guard = await requireAdmin();
+  if (!guard.ok) return guard.response;
+
+  const { id } = await ctx.params;
+  const admin = createAdminClient();
+  const { error } = await admin.from('products').delete().eq('id', id);
+
+  if (error) {
+    // Postgres 23503 = foreign_key_violation — product has order history, can't hard-delete
+    if (error.code === '23503') {
+      return Response.json(
+        { error: 'This product has order history and cannot be deleted. Deactivate it instead.' },
+        { status: 409 }
+      );
+    }
+    return Response.json({ error: 'Failed to delete product' }, { status: 500 });
+  }
+
+  return Response.json({ ok: true });
+}

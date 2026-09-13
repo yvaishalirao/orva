@@ -8,6 +8,7 @@ export default function NewProductForm() {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
+  const [photo, setPhoto] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -27,17 +28,34 @@ export default function NewProductForm() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, price: priceNum, description: description || undefined }),
     });
-    setSaving(false);
 
     if (!res.ok) {
+      setSaving(false);
       const data = await res.json().catch(() => ({}));
       setError(data.error ?? 'Failed to add product.');
       return;
     }
 
+    const product = await res.json();
+
+    if (photo) {
+      const form = new FormData();
+      form.append('file', photo);
+      const imgRes = await fetch(`/api/products/${product.id}/image`, { method: 'POST', body: form });
+      if (!imgRes.ok) {
+        setSaving(false);
+        const data = await imgRes.json().catch(() => ({}));
+        setError(`Product added, but the photo failed to upload: ${data.error ?? 'unknown error'}`);
+        router.refresh();
+        return;
+      }
+    }
+
+    setSaving(false);
     setName('');
     setPrice('');
     setDescription('');
+    setPhoto(null);
     router.refresh();
   }
 
@@ -75,6 +93,17 @@ export default function NewProductForm() {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           className="w-full bg-surface-container-low rounded-lg px-3 py-2.5 text-sm"
+        />
+      </div>
+      <div className="w-40">
+        <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1.5">
+          Photo (optional)
+        </label>
+        <input
+          type="file"
+          accept="image/png,image/jpeg,image/webp,image/gif"
+          onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
+          className="w-full text-xs text-on-surface-variant file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-surface-container-low file:text-on-surface-variant"
         />
       </div>
       <button
