@@ -59,6 +59,25 @@ export async function POST(request: Request) {
 
   if (payErr || !payment) return new Response('Payment record not found', { status: 500 });
 
+  // Step 3b: Atomically decrement stock for every line item — all or nothing.
+  // If any item is short, the order must NOT be marked paid; this is flagged
+  // for manual handling (refund + apology) rather than silently overselling.
+  const { data: orderItems, error: itemsErr } = await admin
+    .from('order_items')
+    .select('product_id, quantity')
+    .eq('order_id', payment.order_id);
+
+  if (itemsErr || !orderItems) return new Response('Order items not found', { status: 500 });
+
+  const { error: stockErr } = await admin.rpc('decrement_stock_for_order', {
+    p_items: orderItems.map((i) => ({ product_id: i.product_id, quantity: i.quantity })),
+  });
+
+  if (stockErr) {
+    console.error('Stock decrement failed — order left unpaid for manual review:', payment.order_id, stockErr);
+    return new Response('Insufficient stock', { status: 500 });
+  }
+
   const { error: orderErr } = await admin
     .from('orders')
     .update({ status: 'paid' })

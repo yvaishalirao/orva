@@ -8,7 +8,7 @@ export async function GET(_req: NextRequest, ctx: RouteContext<'/api/products/[i
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('products')
-    .select('id, name, description, price, image_url')
+    .select('id, name, description, price, image_url, stock')
     .eq('id', id)
     .eq('active', true)
     .single();
@@ -23,11 +23,14 @@ export async function PATCH(request: NextRequest, ctx: RouteContext<'/api/produc
 
   const { id } = await ctx.params;
   const body = await request.json() as Partial<{
-    name: string; description: string; price: number; image_url: string; active: boolean;
+    name: string; description: string; price: number; image_url: string; active: boolean; stock: number;
   }>;
 
   if (body.price !== undefined && (typeof body.price !== 'number' || body.price < 0)) {
     return Response.json({ error: 'price must be a non-negative number' }, { status: 400 });
+  }
+  if (body.stock !== undefined && (typeof body.stock !== 'number' || body.stock < 0)) {
+    return Response.json({ error: 'stock must be a non-negative number' }, { status: 400 });
   }
 
   const admin = createAdminClient();

@@ -20,16 +20,21 @@ export async function POST(request: Request) {
   const productIds = body.items.map(i => i.productId);
   const { data: products, error: prodErr } = await admin
     .from('products')
-    .select('id, price, active')
+    .select('id, name, price, active, stock')
     .in('id', productIds);
 
   if (prodErr || !products) return Response.json({ error: 'Failed to fetch products' }, { status: 500 });
 
-  // Validate every item is active
+  // Validate every item is active and in stock. This is a soft, non-atomic
+  // check for UX only — stock can still change before payment completes; the
+  // real atomic decrement happens in the webhook at payment success.
   for (const item of body.items) {
     const product = products.find(p => p.id === item.productId);
     if (!product || !product.active) {
       return Response.json({ error: `Product ${item.productId} is not available` }, { status: 400 });
+    }
+    if (product.stock < item.quantity) {
+      return Response.json({ error: `${product.name} only has ${product.stock} in stock` }, { status: 400 });
     }
   }
 

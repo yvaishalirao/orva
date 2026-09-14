@@ -6,7 +6,7 @@ export async function GET() {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from('products')
-    .select('id, name, description, price, image_url')
+    .select('id, name, description, price, image_url, stock')
     .eq('active', true)
     .order('name');
 
@@ -18,18 +18,27 @@ export async function POST(request: Request) {
   const guard = await requireAdmin();
   if (!guard.ok) return guard.response;
 
-  const { name, description, price, image_url } = await request.json() as {
-    name?: string; description?: string; price?: number; image_url?: string;
+  const { name, description, price, image_url, stock } = await request.json() as {
+    name?: string; description?: string; price?: number; image_url?: string; stock?: number;
   };
 
   if (!name?.trim() || typeof price !== 'number' || price < 0) {
     return Response.json({ error: 'name and a non-negative price are required' }, { status: 400 });
   }
+  if (stock !== undefined && (typeof stock !== 'number' || stock < 0)) {
+    return Response.json({ error: 'stock must be a non-negative number' }, { status: 400 });
+  }
 
   const admin = createAdminClient();
   const { data, error } = await admin
     .from('products')
-    .insert({ name: name.trim(), description: description?.trim() || null, price, image_url: image_url?.trim() || null })
+    .insert({
+      name: name.trim(),
+      description: description?.trim() || null,
+      price,
+      image_url: image_url?.trim() || null,
+      stock: stock ?? 0,
+    })
     .select()
     .single();
 

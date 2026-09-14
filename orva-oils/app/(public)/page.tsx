@@ -5,7 +5,7 @@ export default async function HomePage() {
   const supabase = await createClient();
   const { data: products } = await supabase
     .from('products')
-    .select('id, name, description, price, image_url')
+    .select('id, name, description, price, image_url, stock')
     .eq('active', true)
     .order('name');
 
@@ -73,6 +73,7 @@ export default async function HomePage() {
               price={p.price}
               description={p.description}
               image_url={p.image_url}
+              stock={p.stock}
             />
           ))}
         </div>

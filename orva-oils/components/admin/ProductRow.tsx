@@ -9,12 +9,14 @@ interface Product {
   price: number;
   active: boolean;
   image_url: string | null;
+  stock: number;
 }
 
 export default function ProductRow({ product }: { product: Product }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [price, setPrice] = useState(String(product.price));
+  const [stock, setStock] = useState(String(product.stock));
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -121,6 +123,22 @@ export default function ProductRow({ product }: { product: Product }) {
             if (!Number.isNaN(n) && n >= 0 && n !== product.price) save({ price: n });
           }}
           className="w-24 bg-surface-container-low rounded-lg px-3 py-2 text-sm"
+        />
+      </div>
+
+      <div className="flex items-center gap-1.5">
+        <span className="text-[10px] font-bold uppercase tracking-wide text-on-surface-variant">Stock</span>
+        <input
+          type="number"
+          value={stock}
+          onChange={(e) => setStock(e.target.value)}
+          onBlur={() => {
+            const n = Number(stock);
+            if (!Number.isNaN(n) && n >= 0 && n !== product.stock) save({ stock: n });
+          }}
+          className={`w-16 bg-surface-container-low rounded-lg px-3 py-2 text-sm ${
+            product.stock === 0 ? 'text-error font-semibold' : ''
+          }`}
         />
       </div>
 

@@ -35,7 +35,7 @@ declare global {
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, clearCart } = useCart();
+  const { items, clearCart, removeItem, updateQty } = useCart();
   const [address, setAddress] = useState<Address>(EMPTY_ADDRESS);
   const [discountCode, setDiscountCode] = useState('');
   const [discount, setDiscount] = useState<AppliedDiscount | null>(null);
@@ -49,6 +49,19 @@ export default function CheckoutPage() {
 
   const fmt = (n: number) =>
     new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(n);
+
+  // Cart contents changed — any previously applied discount was computed against
+  // the old subtotal, so drop it and make the customer re-apply the code.
+  function handleRemove(id: string) {
+    removeItem(id);
+    setDiscount(null);
+  }
+
+  function handleQtyChange(id: string, qty: number) {
+    if (qty < 1) { handleRemove(id); return; }
+    updateQty(id, qty);
+    setDiscount(null);
+  }
 
   function set(field: keyof Address) {
     return (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -231,12 +244,42 @@ export default function CheckoutPage() {
             <h3 className="font-headline text-2xl font-bold text-primary mb-7">Order Summary</h3>
 
             {/* Items */}
-            <div className="space-y-4 mb-7 max-h-64 overflow-y-auto">
+            <div className="space-y-4 mb-7 max-h-72 overflow-y-auto">
               {items.map((item) => (
-                <div key={item.id} className="flex justify-between items-start gap-4 text-sm">
-                  <div>
-                    <p className="font-semibold text-on-surface">{item.name}</p>
-                    <p className="text-on-surface-variant text-xs">Qty {item.quantity}</p>
+                <div key={item.id} className="flex justify-between items-start gap-3 text-sm">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-on-surface truncate">{item.name}</p>
+                    <div className="flex items-center gap-1.5 mt-1.5">
+                      <button
+                        type="button"
+                        onClick={() => handleQtyChange(item.id, item.quantity - 1)}
+                        aria-label="Decrease quantity"
+                        className="w-6 h-6 flex items-center justify-center rounded-md bg-surface-container-high text-on-surface-variant text-sm leading-none hover:bg-surface-container-highest"
+                      >
+                        −
+                      </button>
+                      <span className="text-xs font-semibold text-on-surface-variant w-4 text-center">
+                        {item.quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleQtyChange(item.id, item.quantity + 1)}
+                        aria-label="Increase quantity"
+                        className="w-6 h-6 flex items-center justify-center rounded-md bg-surface-container-high text-on-surface-variant text-sm leading-none hover:bg-surface-container-highest"
+                      >
+                        +
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleRemove(item.id)}
+                        aria-label={`Remove ${item.name}`}
+                        className="ml-2 w-6 h-6 flex items-center justify-center rounded-md text-on-surface-variant hover:text-error hover:bg-error-container/30 transition-colors"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M4 7h16M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m3 0-1 13a2 2 0 01-2 2H8a2 2 0 01-2-2L5 7h14zM10 11v6M14 11v6" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                   <span className="font-bold text-on-surface shrink-0">
                     {fmt(item.price * item.quantity)}

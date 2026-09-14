@@ -7,9 +7,11 @@ interface Props {
   id: string;
   name: string;
   price: number;
+  stock: number;
 }
 
-export default function AddToCartForm({ id, name, price }: Props) {
+export default function AddToCartForm({ id, name, price, stock }: Props) {
+  const maxQty = Math.min(10, stock);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const addItem = useCart((s) => s.addItem);
@@ -20,6 +22,17 @@ export default function AddToCartForm({ id, name, price }: Props) {
     }
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
+  }
+
+  if (stock === 0) {
+    return (
+      <button
+        disabled
+        className="w-full py-4 rounded-xl font-bold text-base bg-surface-container-high text-on-surface-variant cursor-not-allowed"
+      >
+        Out of Stock
+      </button>
+    );
   }
 
   return (
@@ -41,14 +54,14 @@ export default function AddToCartForm({ id, name, price }: Props) {
             id="qty"
             type="number"
             min={1}
-            max={10}
+            max={maxQty}
             value={quantity}
-            onChange={(e) => setQuantity(Math.min(10, Math.max(1, Number(e.target.value))))}
+            onChange={(e) => setQuantity(Math.min(maxQty, Math.max(1, Number(e.target.value))))}
             className="w-12 h-10 text-center text-sm font-bold text-on-surface bg-surface-container-lowest border-x border-outline-variant focus:outline-none"
           />
           <button
             type="button"
-            onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+            onClick={() => setQuantity((q) => Math.min(maxQty, q + 1))}
             className="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors text-lg font-light"
           >
             +

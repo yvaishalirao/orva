@@ -9,10 +9,19 @@ interface Props {
   price: number;
   description: string | null;
   image_url: string | null;
+  stock: number;
 }
 
-export default function ProductCard({ id, name, price, description, image_url }: Props) {
+export default function ProductCard({ id, name, price, description, image_url, stock }: Props) {
   const addItem = useCart((s) => s.addItem);
+  const removeItem = useCart((s) => s.removeItem);
+  const updateQty = useCart((s) => s.updateQty);
+  const qtyInCart = useCart((s) => s.items.find((i) => i.id === id)?.quantity ?? 0);
+
+  function decrement() {
+    if (qtyInCart <= 1) removeItem(id);
+    else updateQty(id, qtyInCart - 1);
+  }
 
   const formatted = new Intl.NumberFormat('en-IN', {
     style: 'currency',
@@ -53,26 +62,53 @@ export default function ProductCard({ id, name, price, description, image_url }:
         )}
 
         <div className="mt-auto pt-3">
-          <button
-            onClick={() => addItem({ id, name, price })}
-            className="btn-primary w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/20"
-          >
-            Add to Cart
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 20 20"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          {stock === 0 ? (
+            <div className="w-full py-3.5 rounded-xl font-bold text-sm text-center bg-surface-container-high text-on-surface-variant">
+              Out of Stock
+            </div>
+          ) : qtyInCart === 0 ? (
+            <button
+              onClick={() => addItem({ id, name, price })}
+              className="btn-primary w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/20"
             >
-              <path d="M3 3h2l.5 3M7 13h8l2-7H5.5" />
-              <circle cx="7" cy="17" r="1.5" fill="currentColor" stroke="none" />
-              <circle cx="15" cy="17" r="1.5" fill="currentColor" stroke="none" />
-            </svg>
-          </button>
+              Add to Cart
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 3h2l.5 3M7 13h8l2-7H5.5" />
+                <circle cx="7" cy="17" r="1.5" fill="currentColor" stroke="none" />
+                <circle cx="15" cy="17" r="1.5" fill="currentColor" stroke="none" />
+              </svg>
+            </button>
+          ) : (
+            <div className="flex items-center justify-between w-full py-1.5 rounded-xl bg-primary text-white">
+              <button
+                type="button"
+                onClick={decrement}
+                aria-label="Decrease quantity"
+                className="w-11 h-11 flex items-center justify-center text-xl font-light hover:opacity-80"
+              >
+                −
+              </button>
+              <span className="font-bold text-sm">{qtyInCart}</span>
+              <button
+                type="button"
+                onClick={() => addItem({ id, name, price })}
+                disabled={qtyInCart >= stock}
+                aria-label="Increase quantity"
+                className="w-11 h-11 flex items-center justify-center text-xl font-light hover:opacity-80 disabled:opacity-40"
+              >
+                +
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ export default async function ProductPage({
 
   const { data: product } = await supabase
     .from('products')
-    .select('id, name, description, price, image_url')
+    .select('id, name, description, price, image_url, stock')
     .eq('id', id)
     .eq('active', true)
     .single();
@@ -71,9 +71,15 @@ export default async function ProductPage({
             <span className="text-sm text-on-surface-variant ml-1">incl. taxes</span>
           </div>
 
+          {product.stock === 0 ? (
+            <p className="text-error text-sm font-semibold">Out of stock</p>
+          ) : product.stock <= 5 ? (
+            <p className="text-secondary text-sm font-semibold">Only {product.stock} left</p>
+          ) : null}
+
           <div className="h-px bg-surface-container-high" />
 
-          <AddToCartForm id={product.id} name={product.name} price={product.price} />
+          <AddToCartForm id={product.id} name={product.name} price={product.price} stock={product.stock} />
 
           {/* Trust badges */}
           <div className="grid grid-cols-2 gap-3 mt-2">
