@@ -4,6 +4,7 @@ import { getAdminUser } from '@/lib/auth/adminGuard';
 const NAV = [
   { href: '/admin/orders', label: 'Orders' },
   { href: '/admin/products', label: 'Products' },
+  { href: '/admin/discounts', label: 'Discounts' },
   { href: '/admin/analytics', label: 'Analytics' },
   { href: '/admin/settings', label: 'Settings' },
 ];
