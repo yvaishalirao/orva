@@ -19,16 +19,18 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   const pathname = request.nextUrl.pathname;
 
-  // Protect customer auth routes
-  if (!user && (pathname.startsWith('/checkout') || pathname.startsWith('/account'))) {
+  // Single sign-in flow for everyone — /api/auth/callback routes admins to
+  // /admin/orders automatically based on email. requireAdmin()/getAdminUser()
+  // remain the real security boundary; this is just where to send someone to sign in.
+  const needsAuth =
+    pathname.startsWith('/checkout') ||
+    pathname.startsWith('/account') ||
+    (pathname.startsWith('/admin') && pathname !== '/admin/login');
+
+  if (!user && needsAuth) {
     const loginUrl = new URL('/auth/login', request.url);
     loginUrl.searchParams.set('next', pathname);
     return NextResponse.redirect(loginUrl);
-  }
-
-  // Protect admin routes — actual email check happens in requireAdmin() in each route
-  if (!user && pathname.startsWith('/admin') && pathname !== '/admin/login') {
-    return NextResponse.redirect(new URL('/admin/login', request.url));
   }
 
   return response;

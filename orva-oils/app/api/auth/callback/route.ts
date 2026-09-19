@@ -24,5 +24,9 @@ export async function GET(request: NextRequest) {
     email: data.user.email ?? '',
   }, { onConflict: 'google_uid', ignoreDuplicates: false });
 
-  return NextResponse.redirect(`${origin}${next}`);
+  // Single login flow for everyone — route by email, not by which page you signed in from.
+  // This is UX routing only; requireAdmin()/getAdminUser() remain the real security boundary.
+  const destination = data.user.email === process.env.ADMIN_EMAIL ? '/admin/orders' : next;
+
+  return NextResponse.redirect(`${origin}${destination}`);
 }

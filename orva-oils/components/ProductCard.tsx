@@ -33,7 +33,7 @@ export default function ProductCard({ id, name, price, description, image_url, s
     <div className="group flex flex-col">
       {/* Image area */}
       <Link href={`/products/${id}`} className="block">
-        <div className="bg-surface-container-lowest rounded-2xl overflow-hidden mb-5 aspect-[4/5] relative flex items-center justify-center p-8 transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1.5 border border-surface-container">
+        <div className="bg-gradient-to-b from-surface-container-lowest to-surface-container-low rounded-2xl overflow-hidden mb-5 aspect-[4/5] relative flex items-center justify-center p-8 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-primary/15 group-hover:-translate-y-1.5 border border-surface-container-high group-hover:border-accent/50">
           {image_url ? (
             <img
               src={image_url}
@@ -50,11 +50,11 @@ export default function ProductCard({ id, name, price, description, image_url, s
       <div className="flex flex-col gap-2 flex-1">
         <div className="flex justify-between items-start gap-2">
           <Link href={`/products/${id}`}>
-            <h3 className="font-headline text-lg font-bold text-on-surface leading-tight hover:text-primary transition-colors">
+            <h3 className="font-headline text-2xl font-semibold text-on-surface leading-tight hover:text-primary-container transition-colors">
               {name}
             </h3>
           </Link>
-          <span className="font-headline text-lg font-bold text-primary shrink-0">{formatted}</span>
+          <span className="font-headline text-2xl font-bold text-primary-container shrink-0">{formatted}</span>
         </div>
 
         {description && (

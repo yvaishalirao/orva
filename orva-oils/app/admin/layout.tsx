@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getAdminUser } from '@/lib/auth/adminGuard';
+import SignOutButton from '@/components/SignOutButton';
 
 const NAV = [
   { href: '/admin/orders', label: 'Orders' },
@@ -31,6 +32,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 {item.label}
               </Link>
             ))}
+          </div>
+          <div className="ml-auto flex items-center gap-4">
+            <span className="text-xs text-on-surface-variant hidden sm:inline">{admin.email}</span>
+            <SignOutButton className="text-sm font-semibold text-error hover:underline" />
           </div>
         </nav>
       </header>

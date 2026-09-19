@@ -1,19 +1,25 @@
 @import "tailwindcss";
 
-@theme {
+/*
+  Theme tokens. Default = "Forest Alchemist" (olive + gold on warm cream).
+  Other palettes from orva_colour_pallete.html are defined below as
+  html[data-theme="..."] overrides — switch by changing THEME in app/layout.tsx.
+  `static` keeps every variable in the output even when only used via var().
+*/
+@theme static {
   /* Fonts */
-  --font-sans: var(--font-inter);
-  --font-headline: var(--font-manrope);
+  --font-sans: var(--font-jost);
+  --font-headline: var(--font-cormorant);
 
-  /* Primary – deep navy */
-  --color-primary: #00366d;
-  --color-primary-container: #1a4d8c;
+  /* Primary – deep olive */
+  --color-primary: #3d4a26;
+  --color-primary-container: #5c6b3a;
   --color-on-primary: #ffffff;
-  --color-on-primary-container: #9abfff;
+  --color-on-primary-container: #e2c97e;
 
-  /* Secondary – burnt orange */
-  --color-secondary: #a23f00;
-  --color-secondary-container: #fc7127;
+  /* Secondary – warm orange accent (badges, cart count) */
+  --color-secondary: #d4622a;
+  --color-secondary-container: #e2c97e;
   --color-on-secondary: #ffffff;
   --color-on-secondary-container: #5c2000;
 
@@ -22,25 +28,35 @@
   --color-tertiary-container: #5f492e;
   --color-on-tertiary-container: #d7b997;
 
+  /* Accent – gold (CTAs, highlights on dark) */
+  --color-accent: #c9a84c;
+  --color-accent-light: #e2c97e;
+  --color-accent-dark: #9a7a2e;
+
+  /* Deep backgrounds (hero, philosophy band, footer) + ticker band */
+  --color-deep: #1a1f0e;
+  --color-deep-2: #2d3520;
+  --color-band: #3d4a26;
+
   /* Surfaces */
-  --color-background: #fef8f5;
-  --color-surface: #fef8f5;
-  --color-surface-bright: #fef8f5;
+  --color-background: #fdfaf5;
+  --color-surface: #fdfaf5;
+  --color-surface-bright: #fdfaf5;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #f8f2f0;
-  --color-surface-container: #f2edea;
-  --color-surface-container-high: #ede7e4;
-  --color-surface-container-highest: #e7e1df;
-  --color-surface-variant: #e7e1df;
+  --color-surface-container-low: #f7f3ec;
+  --color-surface-container: #f2ede2;
+  --color-surface-container-high: #ece6d8;
+  --color-surface-container-highest: #e5dece;
+  --color-surface-variant: #e5dece;
 
   /* Text */
-  --color-on-surface: #1d1b1a;
-  --color-on-surface-variant: #424750;
-  --color-on-background: #1d1b1a;
+  --color-on-surface: #2a2a22;
+  --color-on-surface-variant: #5f5d4c;
+  --color-on-background: #2a2a22;
 
   /* Borders */
-  --color-outline: #737781;
-  --color-outline-variant: #c3c6d2;
+  --color-outline: #7a7868;
+  --color-outline-variant: #d8d1be;
 
   /* Error */
   --color-error: #ba1a1a;
@@ -48,22 +64,155 @@
   --color-on-error: #ffffff;
 }
 
+/* ── Alternate palettes ─────────────────────────────────────────────────── */
+
+/* Sacred Earth — espresso, terracotta, amber */
+html[data-theme="earth"] {
+  --color-primary: #6b3010;
+  --color-primary-container: #8b4513;
+  --color-on-primary-container: #dda060;
+  --color-secondary: #c04a20;
+  --color-secondary-container: #dda060;
+  --color-accent: #c47a3a;
+  --color-accent-light: #dda060;
+  --color-accent-dark: #8b5520;
+  --color-deep: #0e0a06;
+  --color-deep-2: #2a1508;
+  --color-band: #6b3010;
+  --color-background: #fbf6ef;
+  --color-surface: #fbf6ef;
+  --color-surface-bright: #fbf6ef;
+  --color-surface-container-low: #f5eee4;
+  --color-surface-container: #efe6d9;
+  --color-surface-container-high: #e8ddcc;
+  --color-surface-container-highest: #e0d3bf;
+  --color-surface-variant: #e0d3bf;
+  --color-on-surface: #1c1410;
+  --color-on-surface-variant: #5e4a3c;
+  --color-on-background: #1c1410;
+  --color-outline: #8a7060;
+  --color-outline-variant: #dccbb6;
+}
+
+/* Sage & Linen — soft muted greens on near-white */
+html[data-theme="sage"] {
+  --color-primary: #2c3028;
+  --color-primary-container: #5f7253;
+  --color-on-primary-container: #b5c4a0;
+  --color-secondary: #6b7f5f;
+  --color-secondary-container: #b5c4a0;
+  --color-accent: #9aae8c;
+  --color-accent-light: #b5c4a0;
+  --color-accent-dark: #5c7050;
+  --color-deep: #1a1e18;
+  --color-deep-2: #262e22;
+  --color-band: #2c3028;
+  --color-background: #f8f6f2;
+  --color-surface: #f8f6f2;
+  --color-surface-bright: #f8f6f2;
+  --color-surface-container-low: #f0ede5;
+  --color-surface-container: #ebe7dd;
+  --color-surface-container-high: #e4e0d4;
+  --color-surface-container-highest: #dcd8cb;
+  --color-surface-variant: #dcd8cb;
+  --color-on-surface: #2c3028;
+  --color-on-surface-variant: #55604f;
+  --color-on-background: #2c3028;
+  --color-outline: #7a8070;
+  --color-outline-variant: #d3d6c8;
+}
+
+/* Autumn Harvest — burnt sienna, fern and slate blue */
+html[data-theme="autumn"] {
+  --color-primary: #3d5e66;
+  --color-primary-container: #5c7a5a;
+  --color-on-primary-container: #dfa070;
+  --color-secondary: #c97a48;
+  --color-secondary-container: #dfa070;
+  --color-accent: #c97a48;
+  --color-accent-light: #dfa070;
+  --color-accent-dark: #a05a30;
+  --color-deep: #1e2e2a;
+  --color-deep-2: #243830;
+  --color-band: #5c7a5a;
+  --color-background: #fdfbf8;
+  --color-surface: #fdfbf8;
+  --color-surface-bright: #fdfbf8;
+  --color-surface-container-low: #f5f0ea;
+  --color-surface-container: #efe9e1;
+  --color-surface-container-high: #e8e1d7;
+  --color-surface-container-highest: #e0d8cc;
+  --color-surface-variant: #e0d8cc;
+  --color-on-surface: #2c3830;
+  --color-on-surface-variant: #566860;
+  --color-on-background: #2c3830;
+  --color-outline: #7a8c85;
+  --color-outline-variant: #d3dad5;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────── */
+
+html { scroll-behavior: smooth; }
+
 body {
-  background-color: #fef8f5;
-  color: #1d1b1a;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Gradient button helper */
+::selection {
+  background: var(--color-accent-light);
+  color: var(--color-deep);
+}
+
+/* Cormorant's default figures are old-style — keep prices/totals easy to read */
+.font-headline { font-variant-numeric: lining-nums; }
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+
 .btn-primary {
-  background: linear-gradient(135deg, #00366d 0%, #1a4d8c 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-container) 100%);
+  color: var(--color-on-primary);
   transition: box-shadow 0.2s, transform 0.15s;
 }
 .btn-primary:hover {
-  box-shadow: 0 8px 24px rgba(0, 54, 109, 0.25);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-primary) 30%, transparent);
 }
 .btn-primary:active {
   transform: scale(0.97);
+}
+
+.btn-accent {
+  background: var(--color-accent);
+  color: var(--color-deep);
+  transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+}
+.btn-accent:hover {
+  background: var(--color-accent-light);
+  transform: translateX(3px);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--color-accent) 35%, transparent);
+}
+
+/* ── Animations ─────────────────────────────────────────────────────────── */
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  opacity: 0;
+  animation: fade-up 0.7s ease forwards;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-ticker { animation: ticker 32s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up { opacity: 1; animation: none; }
+  .animate-ticker { animation: none; }
+  html { scroll-behavior: auto; }
 }

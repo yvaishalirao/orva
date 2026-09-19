@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/store/cart';
 
@@ -35,7 +35,25 @@ declare global {
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, clearCart, removeItem, updateQty } = useCart();
+  const { items, hydrated, clearCart, removeItem, updateQty, syncWithCatalog } = useCart();
+  const [cartNotice, setCartNotice] = useState('');
+
+  // A saved cart can be days old — reconcile prices/availability with the live catalogue.
+  // (The server still re-prices and re-checks everything when the order is created.)
+  useEffect(() => {
+    if (!hydrated) return;
+    let cancelled = false;
+    fetch('/api/products')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((catalog) => {
+        if (cancelled || !catalog) return;
+        if (syncWithCatalog(catalog)) {
+          setCartNotice('Some items in your cart changed price or availability, so we updated it.');
+        }
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [hydrated, syncWithCatalog]);
   const [address, setAddress] = useState<Address>(EMPTY_ADDRESS);
   const [discountCode, setDiscountCode] = useState('');
   const [discount, setDiscount] = useState<AppliedDiscount | null>(null);
@@ -140,7 +158,7 @@ export default function CheckoutPage() {
         name: 'Orva Oils',
         description: 'Oil order',
         prefill: { contact: address.phone },
-        theme: { color: '#2A7F7F' },
+        theme: { color: '#3D4A26' },
         modal: {
           ondismiss() {
             setError('Payment cancelled.');
@@ -167,6 +185,14 @@ export default function CheckoutPage() {
       setError('Something went wrong. Please try again.');
       setPaying(false);
     }
+  }
+
+  if (!hydrated) {
+    return (
+      <main className="max-w-7xl mx-auto px-8 md:px-12 py-20 text-center">
+        <p className="text-on-surface-variant">Loading your cart…</p>
+      </main>
+    );
   }
 
   if (!items.length && !paying) {
@@ -242,6 +268,12 @@ export default function CheckoutPage() {
         <aside className="lg:col-span-5 sticky top-24">
           <div className="bg-surface-container-lowest rounded-3xl p-8 border border-surface-container shadow-sm">
             <h3 className="font-headline text-2xl font-bold text-primary mb-7">Order Summary</h3>
+
+            {cartNotice && (
+              <p className="text-xs mb-5 bg-accent/15 border border-accent/30 text-on-surface px-4 py-3 rounded-xl">
+                {cartNotice}
+              </p>
+            )}
 
             {/* Items */}
             <div className="space-y-4 mb-7 max-h-72 overflow-y-auto">

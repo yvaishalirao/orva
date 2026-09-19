@@ -93,8 +93,8 @@ export default async function ProductPage({
                 key={label}
                 className="bg-surface-container-low rounded-xl p-3.5 flex items-center gap-3"
               >
-                <div className="w-8 h-8 rounded-lg bg-primary-container/10 flex items-center justify-center shrink-0">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a4d8c" strokeWidth="2" strokeLinecap="round">
+                <div className="w-8 h-8 rounded-lg bg-primary-container/10 text-primary-container flex items-center justify-center shrink-0">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                     <path d="M9 12l2 2 4-4" />
                     <circle cx="12" cy="12" r="9" />
                   </svg>
