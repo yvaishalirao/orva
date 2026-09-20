@@ -19,13 +19,12 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   const pathname = request.nextUrl.pathname;
 
-  // Single sign-in flow for everyone — /api/auth/callback routes admins to
-  // /admin/orders automatically based on email. requireAdmin()/getAdminUser()
-  // remain the real security boundary; this is just where to send someone to sign in.
-  const needsAuth =
-    pathname.startsWith('/checkout') ||
-    pathname.startsWith('/account') ||
-    (pathname.startsWith('/admin') && pathname !== '/admin/login');
+  // Shoppers browse freely: the bag, checkout page and orders page all load without a
+  // login. Login is asked for only when they click Login/Signup or place an order (the
+  // checkout page and the order APIs enforce that). Admin pages are the exception.
+  // /api/auth/callback routes admins to /admin/orders based on email; requireAdmin()/
+  // getAdminUser() remain the real security boundary.
+  const needsAuth = pathname.startsWith('/admin') && pathname !== '/admin/login';
 
   if (!user && needsAuth) {
     const loginUrl = new URL('/auth/login', request.url);

@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/store/cart';
+import { createClient } from '@/lib/supabase/client';
+
+const DRAFT_KEY = 'orva-checkout-draft';
 
 interface Address {
   name: string;
@@ -37,6 +40,31 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { items, hydrated, clearCart, removeItem, updateQty, syncWithCatalog } = useCart();
   const [cartNotice, setCartNotice] = useState('');
+  const [address, setAddress] = useState<Address>(EMPTY_ADDRESS);
+  const [discountCode, setDiscountCode] = useState('');
+  const [discount, setDiscount] = useState<AppliedDiscount | null>(null);
+  const [discountError, setDiscountError] = useState('');
+  const [applyingDiscount, setApplyingDiscount] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [error, setError] = useState('');
+
+  // Coming back from the login page: restore what the shopper had typed.
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      const raw = sessionStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+      sessionStorage.removeItem(DRAFT_KEY);
+      const draft = JSON.parse(raw);
+      setAddress({ ...EMPTY_ADDRESS, ...draft.address });
+      setDiscountCode(draft.discountCode ?? '');
+      // The code was already redeemed, so keep it — but only if the cart total is unchanged.
+      const currentSubtotal = useCart.getState().items.reduce((s, i) => s + i.price * i.quantity, 0);
+      if (draft.discount && draft.subtotal === currentSubtotal) setDiscount(draft.discount);
+    } catch {
+      // unreadable draft — start with an empty form
+    }
+  }, [hydrated]);
 
   // A saved cart can be days old — reconcile prices/availability with the live catalogue.
   // (The server still re-prices and re-checks everything when the order is created.)
@@ -49,18 +77,12 @@ export default function CheckoutPage() {
         if (cancelled || !catalog) return;
         if (syncWithCatalog(catalog)) {
           setCartNotice('Some items in your cart changed price or availability, so we updated it.');
+          setDiscount(null); // computed against the old subtotal
         }
       })
       .catch(() => {});
     return () => { cancelled = true; };
   }, [hydrated, syncWithCatalog]);
-  const [address, setAddress] = useState<Address>(EMPTY_ADDRESS);
-  const [discountCode, setDiscountCode] = useState('');
-  const [discount, setDiscount] = useState<AppliedDiscount | null>(null);
-  const [discountError, setDiscountError] = useState('');
-  const [applyingDiscount, setApplyingDiscount] = useState(false);
-  const [paying, setPaying] = useState(false);
-  const [error, setError] = useState('');
 
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
   const total = discount?.total ?? subtotal;
@@ -112,6 +134,23 @@ export default function CheckoutPage() {
 
   async function handlePay() {
     setError('');
+    if (!items.length) { setError('Your cart is empty.'); return; }
+
+    // Shoppers can browse and fill this page as guests — login is asked for here, when they
+    // actually go to pay. Their cart is already saved; keep the form for when they return.
+    setPaying(true);
+    const { data: { user } } = await createClient().auth.getUser();
+    if (!user) {
+      try {
+        sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ address, discountCode, discount, subtotal }));
+      } catch {
+        // storage unavailable — they'll just re-type the address
+      }
+      router.push('/auth/login?next=/checkout');
+      return;
+    }
+    setPaying(false);
+
     if (typeof window === 'undefined' || !window.Razorpay) {
       setError('Payment script not ready yet.');
       return;
@@ -286,7 +325,7 @@ export default function CheckoutPage() {
                         type="button"
                         onClick={() => handleQtyChange(item.id, item.quantity - 1)}
                         aria-label="Decrease quantity"
-                        className="w-6 h-6 flex items-center justify-center rounded-md bg-surface-container-high text-on-surface-variant text-sm leading-none hover:bg-surface-container-highest"
+                        className="w-9 h-9 md:w-6 md:h-6 flex items-center justify-center rounded-md bg-surface-container-high text-on-surface-variant text-sm leading-none hover:bg-surface-container-highest"
                       >
                         −
                       </button>
@@ -297,7 +336,7 @@ export default function CheckoutPage() {
                         type="button"
                         onClick={() => handleQtyChange(item.id, item.quantity + 1)}
                         aria-label="Increase quantity"
-                        className="w-6 h-6 flex items-center justify-center rounded-md bg-surface-container-high text-on-surface-variant text-sm leading-none hover:bg-surface-container-highest"
+                        className="w-9 h-9 md:w-6 md:h-6 flex items-center justify-center rounded-md bg-surface-container-high text-on-surface-variant text-sm leading-none hover:bg-surface-container-highest"
                       >
                         +
                       </button>
@@ -305,7 +344,7 @@ export default function CheckoutPage() {
                         type="button"
                         onClick={() => handleRemove(item.id)}
                         aria-label={`Remove ${item.name}`}
-                        className="ml-2 w-6 h-6 flex items-center justify-center rounded-md text-on-surface-variant hover:text-error hover:bg-error-container/30 transition-colors"
+                        className="ml-1 md:ml-2 w-9 h-9 md:w-6 md:h-6 flex items-center justify-center rounded-md text-on-surface-variant hover:text-error hover:bg-error-container/30 transition-colors"
                       >
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M4 7h16M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m3 0-1 13a2 2 0 01-2 2H8a2 2 0 01-2-2L5 7h14zM10 11v6M14 11v6" />

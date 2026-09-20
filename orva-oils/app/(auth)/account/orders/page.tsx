@@ -16,8 +16,24 @@ export default async function OrderHistoryPage() {
 
   if (!user) {
     return (
-      <main className="max-w-4xl mx-auto px-8 md:px-12 py-20 text-center">
-        <p className="text-on-surface-variant">Sign in to view your orders.</p>
+      <main className="max-w-md mx-auto px-8 py-24 text-center">
+        <div className="w-16 h-16 rounded-full bg-primary-container/10 text-primary-container flex items-center justify-center mx-auto mb-6">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+        </div>
+        <h1 className="font-headline text-3xl font-bold text-primary mb-2">Your orders</h1>
+        <p className="text-on-surface-variant text-sm mb-8">
+          Login to see your orders and track their status.
+        </p>
+        <Link
+          href="/auth/login?next=/account/orders"
+          className="btn-primary inline-block px-10 py-3.5 rounded-sm font-bold text-xs uppercase tracking-wider"
+        >
+          Login / Signup
+        </Link>
       </main>
     );
   }

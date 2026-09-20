@@ -166,6 +166,11 @@ body {
   color: var(--color-deep);
 }
 
+/* iOS Safari zooms the page when a focused field is under 16px — keep fields at 16px on phones */
+@media (max-width: 767px) {
+  input, select, textarea { font-size: 16px; }
+}
+
 /* Cormorant's default figures are old-style — keep prices/totals easy to read */
 .font-headline { font-variant-numeric: lining-nums; }
 

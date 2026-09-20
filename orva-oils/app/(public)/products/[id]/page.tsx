@@ -31,7 +31,7 @@ export default async function ProductPage({
       {/* Back link */}
       <Link
         href="/"
-        className="inline-flex items-center gap-2 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors mb-10"
+        className="inline-flex items-center gap-2 py-2 -my-2 text-sm font-medium text-on-surface-variant hover:text-primary transition-colors mb-10"
       >
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
           <path d="M13 8H3M7 4l-4 4 4 4" />

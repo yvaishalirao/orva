@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 
@@ -20,7 +20,7 @@ export default async function OrderStatusPage({
   const supabase = await createClient();
 
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) notFound();
+  if (!user) redirect(`/auth/login?next=${encodeURIComponent(`/orders/${id}`)}`);
 
   // RLS scopes this to the authenticated customer's own orders — a wrong-user
   // or non-existent id returns no row here, which we treat as not found.

@@ -30,15 +30,15 @@ export default async function Footer() {
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-accent-light mb-5">Explore</p>
             <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/#products" className="hover:text-white transition-colors">Shop all oils</Link>
+                <Link href="/#products" className="inline-block py-1 hover:text-white transition-colors">Shop all oils</Link>
               </li>
               <li>
-                <Link href="/account/orders" className="hover:text-white transition-colors">Track your order</Link>
+                <Link href="/account/orders" className="inline-block py-1 hover:text-white transition-colors">Track your order</Link>
               </li>
             </ul>
           </div>
 
-          <div>
+          <div id="contact" className="scroll-mt-24">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-accent-light mb-5">Get in touch</p>
             <ul className="space-y-3 text-sm">
               {whatsapp && (
@@ -47,7 +47,7 @@ export default async function Footer() {
                     href={`https://wa.me/${whatsappDigits}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-white transition-colors"
+                    className="inline-block py-1 hover:text-white transition-colors"
                   >
                     WhatsApp · {whatsapp}
                   </a>

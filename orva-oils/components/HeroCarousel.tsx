@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Slide { image: string; caption: string; }
 
@@ -15,11 +15,24 @@ export default function HeroCarousel({ slides }: { slides: Slide[] }) {
   useEffect(() => {
     if (count < 2 || paused) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const timer = setInterval(() => setIndex((i) => (i + 1) % count), INTERVAL_MS);
-    return () => clearInterval(timer);
-  }, [count, paused]);
+    // Restarts after every change (auto or manual) so a swipe/tap is never undone a moment later
+    const timer = setTimeout(() => setIndex((i) => (i + 1) % count), INTERVAL_MS);
+    return () => clearTimeout(timer);
+  }, [count, paused, index]);
 
   const go = (i: number) => setIndex(((i % count) + count) % count);
+
+  // Swipe left/right on touch screens
+  const touchStartX = useRef<number | null>(null);
+  function onTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX;
+  }
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null || count < 2) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(dx) > 40) go(active + (dx < 0 ? 1 : -1));
+  }
 
   return (
     <section
@@ -30,6 +43,8 @@ export default function HeroCarousel({ slides }: { slides: Slide[] }) {
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
     >
       <h1 className="sr-only">Orva Oils — cold-pressed oils</h1>
 
@@ -72,7 +87,7 @@ export default function HeroCarousel({ slides }: { slides: Slide[] }) {
             type="button"
             onClick={() => go(active - 1)}
             aria-label="Previous slide"
-            className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-deep/40 hover:bg-deep/70 border border-white/20 flex items-center justify-center transition-colors"
+            className="hidden sm:flex absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-deep/40 hover:bg-deep/70 border border-white/20 items-center justify-center transition-colors"
           >
             <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
               <path d="M10 3L5 8l5 5" />
@@ -82,14 +97,14 @@ export default function HeroCarousel({ slides }: { slides: Slide[] }) {
             type="button"
             onClick={() => go(active + 1)}
             aria-label="Next slide"
-            className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-deep/40 hover:bg-deep/70 border border-white/20 flex items-center justify-center transition-colors"
+            className="hidden sm:flex absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-deep/40 hover:bg-deep/70 border border-white/20 items-center justify-center transition-colors"
           >
             <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
               <path d="M6 3l5 5-5 5" />
             </svg>
           </button>
 
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex">
             {slides.map((_, i) => (
               <button
                 key={i}
@@ -97,10 +112,14 @@ export default function HeroCarousel({ slides }: { slides: Slide[] }) {
                 onClick={() => go(i)}
                 aria-label={`Go to slide ${i + 1}`}
                 aria-current={i === active}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === active ? 'w-6 bg-accent' : 'w-1.5 bg-white/40 hover:bg-white/70'
-                }`}
-              />
+                className="group px-1.5 py-4 flex items-center"
+              >
+                <span
+                  className={`block h-1.5 rounded-full transition-all duration-300 ${
+                    i === active ? 'w-6 bg-accent' : 'w-1.5 bg-white/40 group-hover:bg-white/70'
+                  }`}
+                />
+              </button>
             ))}
           </div>
         </>

@@ -1,11 +1,14 @@
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { isAdminEmail } from '@/lib/auth/adminGuard';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
-  const next = searchParams.get('next') ?? '/';
+  // Only same-site paths — anything else (e.g. "@evil.com", "//evil.com") falls back to "/".
+  const rawNext = searchParams.get('next') ?? '/';
+  const next = /^\/(?![/\\])/.test(rawNext) ? rawNext : '/';
 
   if (!code) return NextResponse.redirect(`${origin}/auth/error`);
 
@@ -26,7 +29,7 @@ export async function GET(request: NextRequest) {
 
   // Single login flow for everyone — route by email, not by which page you signed in from.
   // This is UX routing only; requireAdmin()/getAdminUser() remain the real security boundary.
-  const destination = data.user.email === process.env.ADMIN_EMAIL ? '/admin/orders' : next;
+  const destination = isAdminEmail(data.user.email) ? '/admin/orders' : next;
 
   return NextResponse.redirect(`${origin}${destination}`);
 }
