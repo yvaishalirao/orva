@@ -68,7 +68,7 @@ export default function ProductCard({ id, name, price, description, image_url, s
             </div>
           ) : qtyInCart === 0 ? (
             <button
-              onClick={() => addItem({ id, name, price })}
+              onClick={() => addItem({ id, name, price, image_url, stock })}
               className="btn-primary w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/20"
             >
               Add to Cart
@@ -100,7 +100,7 @@ export default function ProductCard({ id, name, price, description, image_url, s
               <span className="font-bold text-sm">{qtyInCart}</span>
               <button
                 type="button"
-                onClick={() => addItem({ id, name, price })}
+                onClick={() => addItem({ id, name, price, image_url, stock })}
                 disabled={qtyInCart >= stock}
                 aria-label="Increase quantity"
                 className="w-11 h-11 flex items-center justify-center text-xl font-light hover:opacity-80 disabled:opacity-40"

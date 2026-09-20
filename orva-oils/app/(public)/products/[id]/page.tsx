@@ -79,7 +79,7 @@ export default async function ProductPage({
 
           <div className="h-px bg-surface-container-high" />
 
-          <AddToCartForm id={product.id} name={product.name} price={product.price} stock={product.stock} />
+          <AddToCartForm id={product.id} name={product.name} price={product.price} stock={product.stock} image_url={product.image_url} />
 
           {/* Trust badges */}
           <div className="grid grid-cols-2 gap-3 mt-2">

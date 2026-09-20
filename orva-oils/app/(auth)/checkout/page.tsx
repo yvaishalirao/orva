@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/lib/store/cart';
-import { createClient } from '@/lib/supabase/client';
-
-const DRAFT_KEY = 'orva-checkout-draft';
+import { useCatalogSync } from '@/lib/store/useCatalogSync';
+import CheckoutSteps from '@/components/CheckoutSteps';
 
 interface Address {
   name: string;
@@ -36,10 +36,11 @@ declare global {
   }
 }
 
+// Step 2 of 3 (Bag → Address → Payment). Guests never see this page: the middleware
+// sends them to log in first, then back here.
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, hydrated, clearCart, removeItem, updateQty, syncWithCatalog } = useCart();
-  const [cartNotice, setCartNotice] = useState('');
+  const { items, hydrated, clearCart } = useCart();
   const [address, setAddress] = useState<Address>(EMPTY_ADDRESS);
   const [discountCode, setDiscountCode] = useState('');
   const [discount, setDiscount] = useState<AppliedDiscount | null>(null);
@@ -48,60 +49,14 @@ export default function CheckoutPage() {
   const [paying, setPaying] = useState(false);
   const [error, setError] = useState('');
 
-  // Coming back from the login page: restore what the shopper had typed.
-  useEffect(() => {
-    if (!hydrated) return;
-    try {
-      const raw = sessionStorage.getItem(DRAFT_KEY);
-      if (!raw) return;
-      sessionStorage.removeItem(DRAFT_KEY);
-      const draft = JSON.parse(raw);
-      setAddress({ ...EMPTY_ADDRESS, ...draft.address });
-      setDiscountCode(draft.discountCode ?? '');
-      // The code was already redeemed, so keep it — but only if the cart total is unchanged.
-      const currentSubtotal = useCart.getState().items.reduce((s, i) => s + i.price * i.quantity, 0);
-      if (draft.discount && draft.subtotal === currentSubtotal) setDiscount(draft.discount);
-    } catch {
-      // unreadable draft — start with an empty form
-    }
-  }, [hydrated]);
-
-  // A saved cart can be days old — reconcile prices/availability with the live catalogue.
-  // (The server still re-prices and re-checks everything when the order is created.)
-  useEffect(() => {
-    if (!hydrated) return;
-    let cancelled = false;
-    fetch('/api/products')
-      .then((r) => (r.ok ? r.json() : null))
-      .then((catalog) => {
-        if (cancelled || !catalog) return;
-        if (syncWithCatalog(catalog)) {
-          setCartNotice('Some items in your cart changed price or availability, so we updated it.');
-          setDiscount(null); // computed against the old subtotal
-        }
-      })
-      .catch(() => {});
-    return () => { cancelled = true; };
-  }, [hydrated, syncWithCatalog]);
+  // Prices/availability changed since the bag was saved → an applied discount is stale.
+  const { notice: cartNotice } = useCatalogSync(() => setDiscount(null));
 
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
   const total = discount?.total ?? subtotal;
 
   const fmt = (n: number) =>
     new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(n);
-
-  // Cart contents changed — any previously applied discount was computed against
-  // the old subtotal, so drop it and make the customer re-apply the code.
-  function handleRemove(id: string) {
-    removeItem(id);
-    setDiscount(null);
-  }
-
-  function handleQtyChange(id: string, qty: number) {
-    if (qty < 1) { handleRemove(id); return; }
-    updateQty(id, qty);
-    setDiscount(null);
-  }
 
   function set(field: keyof Address) {
     return (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -134,28 +89,11 @@ export default function CheckoutPage() {
 
   async function handlePay() {
     setError('');
-    if (!items.length) { setError('Your cart is empty.'); return; }
-
-    // Shoppers can browse and fill this page as guests — login is asked for here, when they
-    // actually go to pay. Their cart is already saved; keep the form for when they return.
-    setPaying(true);
-    const { data: { user } } = await createClient().auth.getUser();
-    if (!user) {
-      try {
-        sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ address, discountCode, discount, subtotal }));
-      } catch {
-        // storage unavailable — they'll just re-type the address
-      }
-      router.push('/auth/login?next=/checkout');
-      return;
-    }
-    setPaying(false);
-
     if (typeof window === 'undefined' || !window.Razorpay) {
       setError('Payment script not ready yet.');
       return;
     }
-    if (!items.length) { setError('Your cart is empty.'); return; }
+    if (!items.length) { setError('Your bag is empty.'); return; }
 
     const missing = (['name', 'phone', 'line1', 'city', 'state', 'pincode'] as const).find(
       (f) => !address[f].trim()
@@ -174,6 +112,8 @@ export default function CheckoutPage() {
           discountCode: discount?.code,
         }),
       });
+      // Session expired while filling the form — log in again and come back here.
+      if (orderRes.status === 401) { router.push('/auth/login?next=/checkout'); return; }
       const orderData = await orderRes.json();
       if (!orderRes.ok) { setError(orderData.error ?? 'Could not create order.'); setPaying(false); return; }
 
@@ -185,6 +125,7 @@ export default function CheckoutPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderId }),
       });
+      if (initRes.status === 401) { router.push('/auth/login?next=/checkout'); return; }
       const initData = await initRes.json();
       if (!initRes.ok) { setError(initData.error ?? 'Could not start payment.'); setPaying(false); return; }
 
@@ -229,37 +170,35 @@ export default function CheckoutPage() {
   if (!hydrated) {
     return (
       <main className="max-w-7xl mx-auto px-8 md:px-12 py-20 text-center">
-        <p className="text-on-surface-variant">Loading your cart…</p>
+        <p className="text-on-surface-variant">Loading your bag…</p>
       </main>
     );
   }
 
   if (!items.length && !paying) {
     return (
-      <main className="max-w-7xl mx-auto px-8 md:px-12 py-20 text-center">
-        <p className="text-on-surface-variant text-lg mb-6">Your cart is empty.</p>
-        <a href="/" className="btn-primary inline-block px-8 py-3 rounded-xl font-bold text-sm">
-          Shop All Oils
-        </a>
+      <main className="max-w-md mx-auto px-8 py-24 text-center">
+        <h1 className="font-headline text-3xl font-bold text-primary mb-2">Your bag is empty</h1>
+        <p className="text-on-surface-variant text-sm mb-8">Add something to your bag before checking out.</p>
+        <Link href="/#products" className="btn-primary inline-block px-10 py-3.5 rounded-sm font-bold text-xs uppercase tracking-wider">
+          Shop all oils
+        </Link>
       </main>
     );
   }
 
   return (
-    <main className="max-w-7xl mx-auto px-8 md:px-12 py-12">
-      <h1 className="font-headline text-4xl font-extrabold tracking-tight text-primary mb-10">
-        Secure Checkout
+    <main className="max-w-7xl mx-auto px-4 sm:px-8 md:px-12 py-10">
+      <CheckoutSteps current={2} />
+
+      <h1 className="font-headline text-4xl font-bold tracking-tight text-primary mb-10">
+        Delivery &amp; Payment
       </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        {/* ── Shipping form ────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+        {/* ── Delivery address ─────────────────────────────────────────── */}
         <section className="lg:col-span-7 space-y-6">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shrink-0">
-              1
-            </span>
-            <h2 className="font-headline font-bold text-xl text-on-surface">Shipping Information</h2>
-          </div>
+          <h2 className="font-headline font-bold text-2xl text-on-surface">Delivery address</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {(
@@ -289,24 +228,22 @@ export default function CheckoutPage() {
           </div>
 
           <div className="pt-6 border-t border-surface-container-high">
-            <div className="flex items-center gap-3">
-              <span className="w-7 h-7 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold text-sm opacity-50 shrink-0">
-                2
-              </span>
-              <div>
-                <h2 className="font-headline font-bold text-xl text-on-surface opacity-50">Payment</h2>
-                <p className="text-xs text-on-surface-variant mt-0.5">
-                  Processed securely via Razorpay — UPI, cards, net banking accepted.
-                </p>
-              </div>
-            </div>
+            <h2 className="font-headline font-bold text-2xl text-on-surface">Payment</h2>
+            <p className="text-sm text-on-surface-variant mt-1">
+              You&apos;ll pay securely via Razorpay after this — UPI, cards and net banking accepted.
+            </p>
           </div>
         </section>
 
-        {/* ── Order summary ─────────────────────────────────────────────── */}
-        <aside className="lg:col-span-5 sticky top-24">
-          <div className="bg-surface-container-lowest rounded-3xl p-8 border border-surface-container shadow-sm">
-            <h3 className="font-headline text-2xl font-bold text-primary mb-7">Order Summary</h3>
+        {/* ── Order summary (read-only — edit the bag on the previous step) ── */}
+        <aside className="lg:col-span-5 lg:sticky lg:top-24">
+          <div className="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 border border-surface-container shadow-sm">
+            <div className="flex items-baseline justify-between mb-6">
+              <h3 className="font-headline text-2xl font-bold text-primary">Order Summary</h3>
+              <Link href="/cart" className="text-xs font-bold uppercase tracking-wider text-secondary hover:underline py-2">
+                Edit bag
+              </Link>
+            </div>
 
             {cartNotice && (
               <p className="text-xs mb-5 bg-accent/15 border border-accent/30 text-on-surface px-4 py-3 rounded-xl">
@@ -314,50 +251,24 @@ export default function CheckoutPage() {
               </p>
             )}
 
-            {/* Items */}
-            <div className="space-y-4 mb-7 max-h-72 overflow-y-auto">
+            <ul className="space-y-4 mb-7 max-h-72 overflow-y-auto">
               {items.map((item) => (
-                <div key={item.id} className="flex justify-between items-start gap-3 text-sm">
+                <li key={item.id} className="flex items-center gap-3 text-sm">
+                  <div className="shrink-0 w-12 h-14 rounded-lg bg-surface-container-low flex items-center justify-center overflow-hidden">
+                    {item.image_url ? (
+                      <img src={item.image_url} alt="" className="w-full h-full object-contain p-1" />
+                    ) : (
+                      <span className="text-xl select-none">🫙</span>
+                    )}
+                  </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-on-surface truncate">{item.name}</p>
-                    <div className="flex items-center gap-1.5 mt-1.5">
-                      <button
-                        type="button"
-                        onClick={() => handleQtyChange(item.id, item.quantity - 1)}
-                        aria-label="Decrease quantity"
-                        className="w-9 h-9 md:w-6 md:h-6 flex items-center justify-center rounded-md bg-surface-container-high text-on-surface-variant text-sm leading-none hover:bg-surface-container-highest"
-                      >
-                        −
-                      </button>
-                      <span className="text-xs font-semibold text-on-surface-variant w-4 text-center">
-                        {item.quantity}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => handleQtyChange(item.id, item.quantity + 1)}
-                        aria-label="Increase quantity"
-                        className="w-9 h-9 md:w-6 md:h-6 flex items-center justify-center rounded-md bg-surface-container-high text-on-surface-variant text-sm leading-none hover:bg-surface-container-highest"
-                      >
-                        +
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleRemove(item.id)}
-                        aria-label={`Remove ${item.name}`}
-                        className="ml-1 md:ml-2 w-9 h-9 md:w-6 md:h-6 flex items-center justify-center rounded-md text-on-surface-variant hover:text-error hover:bg-error-container/30 transition-colors"
-                      >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M4 7h16M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m3 0-1 13a2 2 0 01-2 2H8a2 2 0 01-2-2L5 7h14zM10 11v6M14 11v6" />
-                        </svg>
-                      </button>
-                    </div>
+                    <p className="text-on-surface-variant text-xs">Qty {item.quantity}</p>
                   </div>
-                  <span className="font-bold text-on-surface shrink-0">
-                    {fmt(item.price * item.quantity)}
-                  </span>
-                </div>
+                  <span className="font-bold text-on-surface shrink-0">{fmt(item.price * item.quantity)}</span>
+                </li>
               ))}
-            </div>
+            </ul>
 
             {/* Discount code */}
             <div className="mb-7">
@@ -428,7 +339,7 @@ export default function CheckoutPage() {
                 </>
               ) : (
                 <>
-                  Place Order
+                  Pay {fmt(total)}
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
                     <path d="M3 8h10M9 4l4 4-4 4" />
                   </svg>

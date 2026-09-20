@@ -39,7 +39,7 @@ export default function NavBar() {
         <div className="flex items-center gap-5">
           {/* Cart */}
           <Link
-            href="/checkout"
+            href="/cart"
             aria-label="Bag"
             className="relative p-2.5 -m-2.5 text-primary-container hover:text-primary transition-colors"
           >

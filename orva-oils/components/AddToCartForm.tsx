@@ -4,13 +4,14 @@ import { useState } from 'react';
 import { useCart } from '@/lib/store/cart';
 
 interface Props {
+  image_url?: string | null;
   id: string;
   name: string;
   price: number;
   stock: number;
 }
 
-export default function AddToCartForm({ id, name, price, stock }: Props) {
+export default function AddToCartForm({ id, name, price, stock, image_url }: Props) {
   const maxQty = Math.min(10, stock);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
@@ -18,7 +19,7 @@ export default function AddToCartForm({ id, name, price, stock }: Props) {
 
   function handleAdd() {
     for (let i = 0; i < quantity; i++) {
-      addItem({ id, name, price });
+      addItem({ id, name, price, image_url, stock });
     }
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);

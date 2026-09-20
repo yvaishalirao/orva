@@ -1,9 +1,22 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-export interface CartItem { id: string; name: string; price: number; quantity: number; }
+export interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image_url?: string | null;
+  stock?: number;
+}
 
-export interface CatalogEntry { id: string; name: string; price: number; stock: number; }
+export interface CatalogEntry {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+  image_url?: string | null;
+}
 
 interface CartStore {
   items: CartItem[];
@@ -14,7 +27,8 @@ interface CartStore {
   updateQty: (id: string, qty: number) => void;
   clearCart: () => void;
   total: () => number;
-  // Reconcile a persisted cart with the live catalogue; returns true if anything changed.
+  // Reconcile a persisted cart with the live catalogue; returns true if the shopper
+  // needs to be told something changed (removed item, new price/name, lower quantity).
   syncWithCatalog: (catalog: CatalogEntry[]) => boolean;
 }
 
@@ -25,7 +39,7 @@ export const useCart = create<CartStore>()(
       hydrated: false,
       addItem: (item) => set((s) => {
         const existing = s.items.find(i => i.id === item.id);
-        if (existing) return { items: s.items.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i) };
+        if (existing) return { items: s.items.map(i => i.id === item.id ? { ...i, ...item, quantity: i.quantity + 1 } : i) };
         return { items: [...s.items, { ...item, quantity: 1 }] };
       }),
       removeItem: (id) => set((s) => ({ items: s.items.filter(i => i.id !== id) })),
@@ -33,17 +47,23 @@ export const useCart = create<CartStore>()(
       clearCart: () => set({ items: [] }),
       total: () => get().items.reduce((sum, i) => sum + i.price * i.quantity, 0),
       syncWithCatalog: (catalog) => {
-        let changed = false;
+        let notify = false;
+        let dirty = false;
         const next: CartItem[] = [];
         for (const item of get().items) {
           const product = catalog.find(c => c.id === item.id);
-          if (!product || product.stock <= 0) { changed = true; continue; }
+          if (!product || product.stock <= 0) { notify = true; dirty = true; continue; }
           const quantity = Math.min(item.quantity, product.stock);
-          if (quantity !== item.quantity || product.price !== item.price || product.name !== item.name) changed = true;
-          next.push({ id: item.id, name: product.name, price: product.price, quantity });
+          if (quantity !== item.quantity || product.price !== item.price || product.name !== item.name) notify = true;
+          const updated: CartItem = {
+            id: item.id, name: product.name, price: product.price, quantity,
+            image_url: product.image_url ?? null, stock: product.stock,
+          };
+          if (JSON.stringify(updated) !== JSON.stringify(item)) dirty = true;
+          next.push(updated);
         }
-        if (changed) set({ items: next });
-        return changed;
+        if (dirty) set({ items: next });
+        return notify;
       },
     }),
     {
