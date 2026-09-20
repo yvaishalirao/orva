@@ -121,7 +121,7 @@ export default function CarouselSlotEditor({
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
             placeholder="Optional headline shown over the image"
-            className="flex-1 bg-surface-container-low rounded-lg px-3 py-2.5 text-sm"
+            className="flex-1 min-w-0 bg-surface-container-low rounded-lg px-3 py-2.5 text-sm"
           />
           <button
             type="button"

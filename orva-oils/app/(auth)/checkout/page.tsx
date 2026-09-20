@@ -370,7 +370,7 @@ export default function CheckoutPage() {
                   value={discountCode}
                   onChange={(e) => { setDiscountCode(e.target.value); setDiscount(null); }}
                   placeholder="e.g. WELCOME10"
-                  className="flex-1 bg-surface-container-low border-none rounded-xl px-4 py-3 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-on-surface-variant/40"
+                  className="flex-1 min-w-0 bg-surface-container-low border-none rounded-xl px-4 py-3 text-sm text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-on-surface-variant/40"
                 />
                 <button
                   type="button"

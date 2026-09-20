@@ -49,7 +49,7 @@ export default function SettingRow({
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          className="flex-1 bg-surface-container-low rounded-lg px-3 py-2.5 text-sm"
+          className="flex-1 min-w-0 bg-surface-container-low rounded-lg px-3 py-2.5 text-sm"
         />
         <button
           onClick={save}
